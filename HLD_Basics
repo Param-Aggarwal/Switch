@@ -1,0 +1,312 @@
+High Level System Design 
+
+
+Basics of High Level System Design:
+- A single DNS resolving to backend server which processes the request and sends the response back. Has db inside that server only. So, to is a monolithic architecture, where all the things reside in a very large single machine. Here, to optimise, VERTICAL SCALING can be done. Also, Caching can be done to reduce latency even in monolithic architecture —> inside DB, inside backend application, inside servers, etc. 
+- But this system has a big problem of SINGLE POINT OF FAILURE and CANNOT HANDLE HUGE LOAD. 
+- Here, we have to make a big change from monilithic architecture to DISTRIBUTED SYSTEM architecture. Multiple ways in which this can be implemented, like EVENT DRIVEN ARCHITECTURE, etc. 
+- Now, HORIZONTAL SCALING of the nodes is done and servers are distributed over multiple nodes so as to avoid single point of failure. Also, HORIZONTAL POD AUTOSCALING can be implemented to handle huge load. 
+- For implementing horizontal scaling, LOAD BALANCER is required so as to distribute the incoming client requests evenly to the servers. Various algos to routing data to servers like ROUND ROBIN, IP Hashing, LEAST CONNECTIONS etc. 
+- But here, DB is still inside the server. What if that server comes down !! So, now, we SEPARATE THE DB OUT of the server nodes onto another nodes specially for DB’s. This can also have DISTRIBUTED structure with SHARDING implemented to handle load as well as high no of concurrent users. Can have various Architectures to design DB (MASTER SLAVE, MASTER MASTER, SPLIT BRAIN etc. ) and inside them various algos to optimise READ and WRITE operations. Their implementation is discussed below in Detail. 
+- Now, accessing DB is also an expensive thing with increased network latency. So, CACHING at global level so as to REDUCE DB CALLS, and INCREASED LATENCY. 
+- CDN can also be used to reduce latency. CDN stores images, files, videos, html files, js files etc. and can provide them directly to client even before load balancing so as to reduce DB calls. This also reduces load over the servers. 
+- Now, Servers can be GEOGRAPHICALLY DISTRIBUTED in order to further speed up the process and also provides FAULT TOLERANCE. 
+- MONITORING(Metrics + Traces) AND LOGGING can be introduced in the systems so as to increase the efficiency of the system. And adding more visualibility to the system with auto alert generation in case of any outage. 
+- MICRO-SERVICES ARCHITECTURE can be used to efficeintly manage the code base and also reduces redundancy. Here, each service has a separate business use case and functionality. 
+- MESSAGING QUEUE can be used for communication n microservcies architecture so as to reduce latency.  Message queue works in a manner that Consumer pushes the info and Producer consumes that info in asynchronous manner. 
+  
+Concurrency is about dealing with lot of things at once but Parallelism means doing multiple things at once. 
+In Concurrency, context is switched so fast between different tasks that it appears that they are running parallel but actually they are not. As Single core Systems cannot do multiple tasks at once. Hence, Parallelism can not be done in single core systems. 
+Redis —> Remote Dictionary Server —> Can be used as Cache, Message Broker, Db
+
+
+
+Monolithic vs Microservice Architecture —> 
+Microservice Architecture —> Separate services with a singular business use-case and serves only that. Basically, a use case is defined and then a separate service is used to serve that purpose
+Adv —> Scalable, better fine grained control over different apps(if one app has more usage, then only this can be scaled up), parallel dev is easy, good for large teams, Less context needed to develop Dis —> Need skilled architects to design, More Latency(as increased network calls), Difficult to manage, 
+Eg:  used by Google, fb etc. 
+
+Monolithic Architecture —> Single/Multiple machine running the computation, 
+Adv —> good for small teams, less complex, less duplication (as same code has to be written for multiple microservcies), low latency(as no network call, only inside function calls),  Dis —> all of the code needs to be correct and deployable, No Decoupling, Single Point of failure, Huge Server Reload Eg: used by stack overflow
+
+
+How to Avoid Single Point of Failure —> Chaos Monkey Test (Netflix has this tool which takes down one node just to check resilience of distributed systems)
+- Multiple Nodes
+- Copy of Databases
+- Multiple Gateways (or what we call as Load Balancer)
+- DNS redirecting to multiple load balancers
+- Multi DNS can also be used sometimes —> in case of IPL streaming or any live events
+- Multiple Regions 
+
+
+Event Driven Architecture —> 
+Instead of request/response model (which has its dis), we focus on Publisher Subscriber model. In this, we async trigger the event and do not wait for second service to complete instantly. Instead we return instantly and in future, whenever the first service gets response from second service indicating the completion, then the flow of that is triggered further. So, here instead of waiting for response from a service, we move on and whenever we receive acknowledgment, we async start the another process and flow continues. 
+Here, instead of request response type of interactions between services, the focus is on events. This means that services publish info about  events and subscriber services take respective actions according to their requirement on receiving those events. This is called Publisher subscriber Model. 
+Adv —> This basically follows eventual consistency. It reduces failures at multiple points, also reduces latency Dis —> But cannot be used in mission critical situations like transactional systems which require consistency and availability. Also duplicity of idempotent requests. 
+Eg: —> Twitter uses this. 1st person posts something. Event is generated. Subscriber services (Other persons and their feeds) consumes the event and do the respective action. 
+Git uses events(commits), reacts node.js, Gaming Servers etc. 
+Jio also uses this. GPE service is basically handling events and using “Camunda Workflows” to implement that. 
+P.S: Camunda workflow should have a message queue type architecture being used. Find out !!!
+
+Pub-Sub Model is sub part of EDA. EDA can be implemented in many ways, zone of which is Pub/Sub. 
+
+
+Horizontal Partitioning —> Sharding, Indexing,
+
+
+Content Delivery Network  (CDN) —> 
+Basically, making a network to serve the content and handle the delivery of those efficiently without much latency 
+
+
+Geographical Servers —>  
+ABR —> Adaptive Bitrate Streaming —> dynamically updating the bitrate which we want to use for streaming
+Bitrate —> how may bits are used to store the chunk of data 
+
+
+
+Message Queue —> 
+* Servers are processing jobs in parallel.
+* A server can crash. The jobs running on the crashed server still needs to get processed.
+* A notifier constantly polls the status of each server and if a server crashes it takes ALL unfinished jobs (listed in some database) and distributes it to the rest of the servers. Because distribution uses a load balancer (with consistent hashing) duplicate processing will not occur as job_1 which might be processing on server_3 (alive) will land again on server_3, and so on.
+* This "notifier with load balancing + heartbeat mechanism” is a "Message Queue”.
+Eg: Rabbit MQ, Zero MQ(library to write message queue), Java Message system, etc. 
+
+Multi threading (Apache) , single threaded with async tasks (Node.js) still can take lot of time. So, message queue can be used to reduce waiting period of client and send some response telling we are working in behind and execute the task in backend. 
+
+- Message queue is a method which collects messages from the producer services and sends them to consumers services asynchronously in O(1) time complexity. 
+- Works is FIFO (First in First out) style
+- This mechanism is different from HTTP Request Response mechanisms. 
+- Every task/event is consumed only once and is de-queued once it is accessed by any consumer. 
+- This is used:
+    * In systems where micro-service base architecture is being used. As it helps decouple the system from each other and enables centralised communication between them without increased latency. 
+    * This is used in systems where instant response is not required by the services. 
+    * Where task is long running and we do not want user to keep waiting till it is completed. 
+- There can be different architectures to use message queue —> Producer-Consumer, Pub-sub, Req-Reply etc. 
+- How does Publisher and consumer connect to this queue (is it push or pull or long polling mechanism)
+- Eg: Kafka RabbitMQ, Redis etc. 
+
+
+Message queue vs Pub Sub —>  
+- When any task/event is consumed by any service, it is dequeued from the queue for ever. That task is not available at all. 
+- But in Pub-Sub, multiple micro-servcies can consume that same event and it lies in there forever. 
+
+RabbitMQ —> 
+- Distributed messaging queue which follows Pub Sub Model 
+- Written in Erlang Language
+- Developed in 2007
+- Have different protocols —> AMQP, STOMP, MQTT etc.  
+- It has an Exchange within it which routes messages to different queues and then consumer uses that message. Rabbit Mq can share the task/message/event to multiple queues via shared aottern(topic creation) or to a single queue ()x
+
+
+￼
+RabbitQ vs Kafka —> https://www.youtube.com/watch?v=w8xWTIFU4C8
+
+How to choose DB ? 
+- Type of Data to be stored —> files, Images, json, key-value, row-column etc. 
+- Availability !
+- Consistency !
+- Indexing Capabilities !
+- Caching Feature available or not ?
+What does DB Offers !!!
+- Storage Capabilities
+- Mutability
+- Indexing (for fast searching)
+- ACID properties (Transactional Gurantee)
+- Access Control 
+Quorum —> Concept where all the worker nodes basically have the shared data which they make after a consensus and this db 
+is used in case of any in-consistency. For eg: 1,2 are worker nodes, then 3 will be there which will have both their datas and when user asks for some data stored in 1 and by chance, 1 is down and 2 also does not have it by then(by backup), then 3 will be contacted and then that db will be used. (See Below Pic: 1)
+￼
+———Pic 1———
+
+No SQL 
+Adv —> 
+- Whenever Insertions and retrievals of data is always from multiple db’s then better to store them at single place using NoSQL so as to avoid JOINS(expensive operation). Thus Insertions and Retrievals is easy(No JOIN)
+- Flexible Schema
+- Easily Scalable
+- Build for metrics, Analytics, logging etc.  
+Dis —> 
+- ACID not guaranteed. So, consistency can be issue. 
+- Not read Optimised. Comparatively slow search
+Eg: Youtube, Stack Overflow, Meta does not use No SQL DB’s
+
+NoSQL Architecture (Cassandra) —> AP System over C (CAP Theorem)
+So, A distributed No SQL db is made up of 3-4-5 different nodes having master slave architecture. 
+NoSQL DB’s generally follow concept of sharding (Storing small small chunks over multiple nodes). 
+And this done —> 
+- with the help of load balancer or 
+- using consistent hashing method to equally distribute data over multiple nodes. (PS: for Hashing, hash function should be great for optimisation). 
+- Also, every node has a backup node out of these 5 only.(key cent of sharding). So, If 1 has a data stored and its backup node is 5, then same data will be pushed to 5 also to have eventual consistency and availability. (See below pic no. 1).
+
+For eg: —> In case if 1 is down and 5 does not have the data, or user makes GET request even before data reaches 5, then this architecture may fail. So, to avoid this, concept of Quorum is used where another node(master node generally) basically makes consensus of data from all the backups and returns accordingly. (Generally, 3 nodes make 1 quorum) 
+It votes all the nodes(main nodes and all backups) and then makes consensus out of majority and then responds accordingly. This ensures availability and eventual consistency. 
+If this also fails(which is rare), then in NoSQL db’s we are ready to accept these kind of inaccuracies. (As it is a rare condition where 1 node is down and even quorum cannot be made either). 
+
+
+
+How can DB be optimised —> 
+Generally, data is stored in DB’s in B+ Tree Data Structrue as it has O(log(n)) on Write as well as O(log(n)) on Read Operation. 
+General Idea is —> Write on linked List(O(1)) and Read on Sorted Arrays (O(log(n)))
+Implementation —> 
+- Sorted String Table(SST) —> smaller chunks of sorted array. 
+- Compaction —> Merging of two sorted arrays in order for faster READ. 
+- Bloom Filter(implemented Hash-map) —> used on Compacted arrays for faster READS. 
+
+
+In non distributed systems, we have multiple issues:
+- Single Point of Failure
+- Heavy Load
+- High Latency
+Vertical Scaling upto some level(cost limit) —> Horizontal Scaling which introduces the problem of consistency.  
+CONSISTENCY —>  In Distributed Systems, any two copies of data should have the same record. 
+- Multiple Copies have their regional data and syncing happens later at some time. (During that time, data is stale or unavailable —> Dirty Read Problem)
+- If any READ comes for another region, we wait for data from another copy. (Not available) 
+- During Syncing process(either via TCP or UDP or any other), receiving ACK is a problem and then probably ACK of ACK may also be a problem. (What if connection fails ?)
+- Make One copy a “leader” and other “worker”. Only leader has the permission to write and worker can read only. (Still not available if want to WRITE from B and A is Down)
+2 Phase Commit(2PC) —> in case of Total Consistency but might be unavailable
+- Multiple Worker Nodes 
+- Whenever WRITE comes to Leader, Leader sends PREPARE request to all workers meaning to prepare for the commit. 
+- When worker receives PREPARE request, it does the changes but does not commit and sends back the ACK
+- IF any ACK is not reached, then leader RETRIES multiple times. If it does not receive now, then FAIL Transaction. 
+- After Receiving all the ACK’s, Leader COMMITS itself and sends commit request to all workers.
+- Workers then COMMIT their requests. And sends back ACK for commit. 
+- IF Leader does not get all ACK’s, then it Retries multiple times and waits, And if fails again, then Send ROLLBACK to other workers which sent ACK of commit. And FAILS transaction. 
+- If it gets all ACK, then all is good and data is consistent. 
+This ensures complete consistency but for a short period of time, data is unavailable. It is done where ROLLBACK is possible and consistency is of utmost importance. So, This is SLOW but RELIABLE. 
+
+
+Two Generals Problem —> 
+
+
+
+Distributed Consensus —> 
+Master Slave architecture —> Master-Master Architecture —> Split Brain Architecture 
+Master Slave architecture —> Master doing WRITE and Slave doing READ. Issue: If Master down, no WRITE possible
+Master-Master Architecture —> Having two masters making WRITE themselves and then communicating to other for changes. Issue: Communication b/w both masters fail ! 
+Split-Brain Architecture —> M-M Architecture but with a 3rd one as consensus solver. If comm b/w both masters fail, then they make change in themselves, and propagate that to third one to update the state, And when 2nd one does the same and gives its state to 3rd, it fails the transaction because the previous state is not matched. [P.S: Here, we assume that C and comm b/w both Masters don’t fail at the same time]
+IMPLEMENTATION —> 
+- 2PC, (Discussed Above)
+- 3PC, 
+- Multi Version Concurrency Control(Used by Postgres, Multiple versions of a file is kept and dirty read is allowed, and if don’t want that, then a little slow but consistent WRITES can be done),
+- SAGA (used in long transactions where possibility of ROLLBACK is high at any time, Eg: Call charges(Block funds based on the duration of call, and can cut the call, whenever empty balance))
+
+MasterSlave Architecture —> 
+Read requests goes to Slave
+Write Request to Master
+Master has the latest code , every slave polls for master’s latest copy and updates itself. 
+
+
+
+Caching —> Reduces latency by using local storage. Bad Cache policies can hurt performance too. 
+Update db whenever write call —> Eventual Consistency 
+Remove old cache in case of overflow
+Cache Placement —> Cache can be inside the client system or backend application, inside db, or explicit cache register. 
+Redis is used often for Caching 
+
+CACHING —> storing relevant data intelligently in memory so as to reduce the latency, and several other reasons mentioned below
+- Save Network Calls, 
+- Avoiding Computations(avoiding re calculation of same stuff), 
+- Reducing DB Load
+How can we implement Caching —> 
+- LRU —> pull the data in cache as we start and delete the Least Recently Used data from cache. —> Queue (implementation)
+- LFU —> Delete the least frequently used data —> not really used in Real world scenarios because it is in-efficient
+- Sliding Window Based Policy —> implemented by Caffeine Google 
+Problems with Cache —> 
+- Too small cache
+- High Cache miss Ratio leading to increased latency
+- Consistency issues of cache and actual data. (PS: Cache need to be updated to maintain CONSISTENCY) 
+Where to Place Cache —> 
+- Inside Server —> fast, but if server goes down, so is its cache
+- Global Cache —> reduces n/w calls, is faster than db call, does not have ever down issues. All the servers will first query global cache, and only then db call(if cache miss)
+- Inside DB —> only for faster querying
+How to update Cache —> 
+- Write Through —> We hit the cache, update it and then update db. —> Issue: Other clones of cache also needs to be updated, N/w calls not reduced which was the primary purpose of cache implementation. Resolution: Wait for some time, and then update db. (Eventual Consistency)
+- Write Back —> We hit cache, delete it from cache, make update in db, then update in cache in all clones. —> Issue: Low Performance, High Latency, But Consistency HIGH 
+- Can have mix of both with some inconsistency (Eventual consistency) and mix of speed —> hit cache, update it, go to db, update it, update all other clones of cache. (This has high n/w calls but read in case of absolute consistency) 
+
+
+
+API DESIGN :
+Absolute requirements —> 
+- What does API do ? 
+- Its Input and Output ?
+- How does it do ? (Actual Coding logic)
+- Where does this API belong in your codebase ? 
+Things to consider —> 
+- Proper Naming defining what exactly does this API do.  
+- Providing Optional Parameters in order for advanced searching or faster processing of API. 
+- Output only what is asked for. Avoid Extra Info. 
+- NO Side Effects (No Extra behaviour except of what is asked for) —> make another API for that.
+- If Output Response is large: 
+    - Fragmentation —> Sizing the limit on response length. If greater than that, will be sent over multiple calls not one.
+    - Pagination —> To avoid latency
+- Can also implement Caching on the basis of requirement. (Cache can reduce consistency temporarily)
+- If need to expose on HTTP, then Endpoint and routing should be careful. 
+
+REST vs GRAPHQL vs SOAP —> 
+
+   API GATEWAY  —>
+Handles
+- Authentication
+- Routing
+- Rate Limiting
+- Monitoring
+- Logging
+-  
+
+  
+————— Doubts ——————
+Different Types of Load Balancers —> ELB, Gateway 
+DB ?? Different DBs ?  —> Cassandra, PostgreSQL, MongoDB, MySQL etc. 
+What is CDN ?
+Messaging Queue !!! —>  Example Rabbit MQ What is Kafka ??
+What is HeartBeat ?? Eg: Zookeeper
+
+Difference b/w Proxy and Reverse Proxy —> 
+- Proxy sits between client and Internet whereas 
+- Reverse Proxy sits between Internet and Server. 
+Rate limiting Algos —> 
+- Fixed Window, 
+- Sliding Window, 
+- Token Bucket etc. 
+How can Data be stored ? —> 
+- SQL form vs 
+- NoSQL Form 
+What is Hash Function and its Implementation ??  —> 
+- Use case —> method to basically categorise the inputs and distribute as uniformly as possible to the consumers. 
+Security Mechanism —> 
+- Token instead of passwords, 
+- Authentication, 
+- Authorisation, 
+- Two Factor Authentication, 
+Different Protocols for communication ? —> 
+- HTTP —> protocol for transmitting hypermedia documents b/w web browsers and web servers (Client Server architecture), stateful architcture
+- GRPC —> stateful architcture
+- P2P Protocols(XMPP) —> decentralised protocol used for instant messaging, peers communicate with each other (NO Client, server architecture)
+- SMTP —> for outbound emails
+- IMAP, POP3 —> for inbound mails
+- TCP —> Protocol enabling communication over any network —> data integrity(reliable), and keeps order of messages, stateful architcture
+- UDP —>  Protocol enabling communication over any network —> less reliable but fast (for streaming and gaming)
+- Web Sockets —> 
+- Web Hooks —> condition based HTTP request
+TCP vs UDP !!! 
+Load Balancer is different from API Gateway —> 
+Distributed System is different from micorservices architecure —> 
+Communicating b/w microservices can be
+- HTTP based(req-response), or 
+- asynchronous(message queue)
+
+
+HTTP Request Response Model Pros and Cons —> 
+￼
+Pub Sub Model Pros and Cons —> 
+- ￼
+
+Estimation Guess —> 
+Numbers for Estimation Guesses U need to know: (How much time diff DB takes for diff operations)
+￼
+
+Blob —> Binary large Object
+Clob —> Character Large Object
+
+How do you want to store IMAGES ?  —> File vs Blob
+

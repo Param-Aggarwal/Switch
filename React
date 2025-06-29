@@ -1,0 +1,217 @@
+React 
+
+
+
+React is library to manage SPA. 
+
+React Rendering —> 
+- React makes copy of real DOM called VIRTUAL DOM, makes changes to that first as it is less expensive and fast, identifies difference with respect to Real DOM, and then applies only the reqd changes to REAL DOM. 
+- By default, Reacts performs Client Side Rendering only. SSR can also be implemented fro particular case but not as easy as other library like Next.js. (in backend code, call for app component has to be made, then on frontend, that rendered server side component has to be hydrated with js on frontend)
+- In React, functions and variables declared inside a component body are re-created on every render. This includes:
+    * Arrow functions (const handleClick = () => {})
+    * Objects (const obj = {})
+- This is why hooks like useCallback and useMemo exist: to preserve reference identity between renders when needed.
+
+
+ URL based Routing —> 
+
+Components —> 
+- Lifecycle of Component —> Mounting, Updating, Unmounting  
+Controlled Components —> 
+- We change components based on the change in state which is controlling that component
+Pure and Impure Components —> 
+Strict Component —> 
+- wrapped around App Component to help us be safer and prevent errors. 
+Portal Component —> 
+- used when Particular component is to be loaded at specific place under specific component every time. 
+Suspense component—> 
+- used as fallback when data takes time to load. 
+
+
+JSX —> JS with XML , dynamic rendering possible with JSX opposite to HTML Static rendering. 
+Props —> 
+    - Used to pass properties onto child component. 
+    - It is an Object. 
+    - Can pass anything inside props, be it variables, functions, components(child components) etc. 
+    - Has problem of Prop Drilling.  
+State —> to manage data 
+
+
+
+Hooks —> 
+- Hooks are functions which allows us to hook and manage states. 
+- Lets us add state and other features to our functional components without using class based components. 
+- GPT Link for Hooks: https://chatgpt.com/c/683c5e61-ccdc-8001-b424-70e94cc4955b (In Depth analysis)
+- Link for below video: https://www.youtube.com/watch?v=LOH1l-MP_9k (Summarising all the hooks with their functionalities)
+- ￼
+
+State Hooks —> 
+- useState —> to manage simple state management
+- useReducer —> to handle complex or multiple dependent states with a single reducer function.
+    * Helpful as it makes changes to all the related states in a single hook. 
+    * Takes input —>  useReducer hook takes 2 inputs: Reducer function and initial states object
+    * Outputs —> state object + dispatch function which changes the state based on actions. This function (dispatch) is called whenever this hook is triggered. 
+
+Effect Hooks —> 
+Used for dealing with external systems or doing things cannot be done by any other hook
+- useEffect —> 
+    * Is asynchronous in nature
+    * used to perform side effects 
+    * Generally used for following two types of Side effects: 
+        1. Event based —> click, submit, etc  —> But this should be handled by event Listeners itself and not useEffect
+        2. Render Based —> fetch data from external system —> this should be handled by React Query or Next.js Iibrary. 
+    * SHOULD NOT BE USED OFTEN. 
+    * Actual USE CASE of useEffect is to sync React components with Browser APIs. 
+    * For eg: when we want to sync video element of html with some variables. i.e. handle DOM elements with variables/states.
+    * For eg: if isPlaying == true, then instruct the video element to play, otherwise stop. 
+- useLayoutEffect —> 
+    * stricter version of use Effect. 
+    * Runs before rendering the page for the first time. 
+    * Is synchronous. Helpful in getting details from browser at runtime and then using them to load data. 
+    * Use Case: find out client layout measurement and setting them in state even before rendering. 
+- useInsertionEffect —> 
+    * Runs before the above two. Even before rendering the ui. I
+    * s synchronous. To add styles to a particular js elements. 
+    - ￼
+
+Context Hooks —> 
+- useContext —> Instead of prop Drilling, we use this hook to provide global context to our parent component and then can use it anywhere inside the child component even if it is 3-4-5 levels deep. 
+    * How to implement —> 
+        * Create context variable or object with the context values. (Can be defined in separate file named Context.js)
+        * Wrap your parent component with Context.provider component. 
+        * Pass value of context inside ContextProvider component as props. 
+        * Use that value in child component with useContext Hook and the above made context variable as input. 
+    * Directory Structure can be —> 
+        * ￼
+    * All components using useContext re-render when context value changes
+    * Ca be used in combination with useState or useReducer hook. 
+    * Use Case —> helps in enabling features like: (Basically global setting that do not change much)
+        * Theme Switching
+        * Authentication Context
+        * Language Settings etc. 
+
+Ref hooks —> 
+- useRef —> 
+    * It is similar to useState but keeps the state data across multiple re-renders. 
+    * And also does not re render a page when state changes. 
+    * It takes input the initial value of state similar to useState hook. 
+    * It Outputs only the state data object, not a function (like SetData). because data is mutable itself. 
+    * It has .current property which is used to change the values of data. 
+    * Also have ref attribute to set value of data. Generally used to store DOM elements. 
+    * Perfect for storing values like DOM elements, timers, or any mutable object that doesn’t need to trigger UI changes.
+- useImperativeHandle —> 
+    * Similar to ref hook but used when we want to pass the ref to child component. 
+    * Needs ForwardRef function. 
+    * Not used much
+    * Implementation: 
+        * make the ref
+        * pass that as a prop to child component
+        * wrap the child function inside forwardRef() function
+Performance Hooks —> 
+- useMemo —> implements memoisation to increase speed and avoid unnecessary calculations. 
+    * It is used whenever we want to store value when something changes, For Eg: if numbers array change, the only calculate sum. 
+    * i.e. Runs during a re-render. But does not cause a re-render itself. 
+    * It always returns an output with some value. 
+    * So the value of that sum can be assigned to any variable which may or may not be managed by any other hook
+    * Conclusion —> Whenever the component re-renders (due to any state/prop change), useMemo() checks if its dependencies changed.
+        * If yes → it recomputes the value.
+        * If no → it returns the cached value from the last render.
+- useCallback —> similar to useMemo but for functions instead of variables or objects. It Caches functions between renders. 
+    - Does not trigger re-render. Runs during re-render only if dependency is changed. 
+    - It basically maintains the identity of function at the time of re-rendering if the dependency is not changed in that re-rendering. 
+    - Use it when function identity really matters — especially with:
+        * React.memo
+        * custom hooks
+        * props optimisation
+        * On useEffect Dependencies
+    - Don’t —> If you're not passing the function as a prop or not depending on it in useEffect/useMemo, you probably don’t need useCallback. 
+
+Transition Hooks —> 
+- useTransition —> used when we need to run non-urgent state updates in background with low priority   so that urgent ones perform first. It Keeps UI Responsive while doing heavy updates in background. 
+    * It does not make our code faster or it does not cancel the execution of the function. 
+    * It just cancels the execution for previous state change 1 if a new state change 2 is received which has more priority. 
+    * So the flow is like: 
+        * change1 initiated —> 
+        * handleChange1() is called with low priority set —> 
+        * change2 initiated before completion of handleChange1() —> 
+        * then handleChange2() is started and handleChange1() is abandoned. 
+    * Helps in laggy UI scenarios 
+    * Use Cases —> 
+        * Large list filtering —> Don't freeze input while filtering 
+        * Tab switching in dashboards —> Load new tab content in background
+        * Search-as-you-type —> Let user type freely while searching
+        * Form suggestions/autocomplete —> Defer API-heavy suggestions
+        * Rendering charts/graphs —> Render Ul-heavy components non-urgently
+- useDefferedValue —> 
+    * instead of running in background, it defers the execution of the function upto some time(adaptive time delay by React only) and runs back the fn when it is free to do so. 
+    * So the flow is like: 
+        * change1 initiated —> 
+        * handleChange1() is not called but deffered for some time—> 
+        * change2 initiated before starting of handleChange1() —> 
+        * then handleChange2() is started and handleChange1() is dropped. 
+    * Also helps in laggy UI scenarios 
+    * Can use useDeferredValue with React.memo() or useMemo() to optimise rendering of components that use the deferred value.
+    * It Doesn't delay the state itself —> Only the value passed to the next component is delayed
+    * Use Cases —> 
+        * Filtering/search —>Don’t block input while showing results
+        * Large lists —> Avoid re-rendering whole list too often
+        * Dependent drop-downs —> Prevent UI freezing when one state triggers heavy work
+- 🧠 Final Difference Recap:
+    * useTransition → Runs the expensive update in the background with low priority → If a new high-priority update comes (e.g., user types again), → The previous low-priority update may be abandoned, and the new one starts
+    * useDeferredValue → Delays the propagation of the input (query) to the expensive function → If input changes quickly again, it may skip earlier values → Only latest deferred value is eventually used → The expensive function is never called for intermediate values
+* 
+Extra hooks —> 
+- useId —>
+    * for generating random id’s for html attributes labelling. 
+    * Can’t be used for object id’s when listing elements. 
+- useDebugValue —> 
+    * only used when using react debug tools in order for debugging. 
+
+
+React 19 Hooks —> 
+- Don’t need to use useMemo and useCallback hooks as compiler itself does the optimisation. 
+- Don’t need ForwardRef at all. React compiler does this automatically. 
+- use —> 
+    * Lets u load resources asynchronously
+    * Can resolve promises as well as read contexts. 
+    * Replaces useEffect for rendering and useContext for reading context completely.
+    * Instead of useEffect, we make fetch call inside use() hook with no dependency array. Also, provides functionality of Suspense component for acting as a fallback while loading the data in the background. Just wrap the component with Suspense component with fallback attribute and inside that your jsx. 
+    * Instead of useContext(), just use use() completely. basically a name change, u can assume. 
+    * Directives —> 
+        * helps specify where to run the code (client or server)
+        * implementation: “use client” or “use server” at the top of function/component file. 
+- useOptimisitic() —> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+React Query —> alias TanStack Query
+- A React library which handles fetching more efficiently
+- Handles caching and cache invalidation behind the scenes automatically. 
+- Handles refetching via “reFetchOnWindowFocus: true”
+- useInfiniteQuery() —>  for infinite scrolling data. 
+- Optimistic Updates 
+Other Info —> 
+Global State —> to avoid prop drilling to multiple levels, we can make a global state using Context API or Redux. 
+Key Prop —> every item in the list should have a unique identifier named key. So that React knows exactly which element is to be updated, removed or whatever. 
+Event Handling —> directly reference the function inline inside the curly braces with camelCase event name. Like onClick={handleClick}, onSubmit{handleSubmit}, onChange{handleChange} etc. 
+Conditional rendering —> using Tertary operator, && or || 
+Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only inside curly braces. So, everything dynamic Js would go under curly braces. Like {variable}, {function}. 
+	Double curly braces vs Single curly braces !!?? 
+
+
+
