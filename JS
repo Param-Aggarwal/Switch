@@ -1,0 +1,254 @@
+JS
+
+1. JS is a Synchronous single-threaded language
+2. Every variable is assigned value “undefined” at start. 
+3. JS is loosely typed language (can define variable but not assign any value, undefined will be assigned for the time being)
+4. STRICT Mode 
+
+Types of error: 
+1. Reference Error —> related to logic —> like cannot access a variable in scope
+2. TypeError —> related to data type —> like re-assigning value to const, converting let to var, executing var a(like a())
+3. Syntax error —> syntax is wrong i.e. expects something but not present —> like declaring const without initialisation 
+4. Not defined —> 
+
+JS always requires JS Engine to run. IN chrome, it is called V8 Engine. In Firefox, it is called 
+- JS engine 
+    - For chrome, Node.js —> V8 (written in C++)
+    - For Firefox —> Spider Monkey (First ever JS Engine)
+    - For Safari —>
+    - For Internet Explorer —> Chakra
+You can write your own JS Engine. Only rule is that it should follow ECMA Script rules. 
+
+For JS to run, JRE is required which consists of following:
+JS Runtime Environment(JRE) —> JS Engine(call stack+Memory heap) + Event Loop + Micro-task Queue +  CallBack Queue + API’s
+Execution Context contains 
+	- Memory(var environment) + code(thread of execution)
+	- Thread of Execution —> where code is run 
+Every time a code is run in js, an execution context is created for that environment.  Every function has its own execution context created at the time of initialisation of function and this gets deleted after the completion of the function.  	- Stage 1: memory Allocation phase
+	- Stage 2: Code execution phase
+JS Engine gives us different functions in the global context that can be accessible at any point in the code.
+Whenever JS script is run inside the chrome, following things happen before executing the first line:  Global space is created + global context is set + window function for chrome + this function for chrome + memory allocation is done for all the variables n functions of the script. 
+Call Stack is stack to maintain the ORDER OF EXECUTION of all the execution contexts. 
+
+Hoisting is effectively similar to function definition moving on the top of the code before code execution. But not for the variables. In reality, memory allocation is done even before the code execution and it is done in such a manner that variables, arrow functions are assigned undefined value and functions are assigned its value. Thus, defines the hoisting. This means you can use variables and functions before you actually declare them in the code.
+Hoisting is only for Traditional FUNCTIONS  + VARIABLES + (LET + CONST) —> in special case only (and not ARROW Functions ) Hoisting is also possible for LET and CONST but they stay in temporal dead zone for the time being when they are not initialised. So, in normal hoisting, variables and functions are declared in global context and assigned special value “undefined” till the time they are initialised. But in case of let and const, they are hoisted in temporal dead zone instead of global context. They never go in global context even after initialisation. They have different scope altogether. Also, Things in temporal dead zone cannot be accessed. Temporal dead zone is for the time when the  let and const are defined but are not accessible. Gives Reference Error
+Application of hoisting: We can call the function even before declaring it in the code. 
+
+Hoisting for var —> yes (in global context) + initialised to undefined 
+Hoisting for function —> yes (in global context) + Initialised to undefined
+Hoisting for var and let —> yes (in temporal dead zone) + Not initialised —> that is why they can not be accessed before initialisation. 
+Hoisting for function expression (function declared with variable) —> yes (in global context) but treated as variable and not function. So, cannot be accessed before initialisation. 
+
+——> Where does LET AND CONST get memory allocated ? Cause they are not in global context. ????
+Ans —> LET and CONST are always block scoped. They get stored in their block’s scope and cannot be accessed outside of this. AND if there exists no block, then they are present in temporal dead zone. 
+
+Shortest JS code is blank script. (Because JS creates global context, window function is created for chrome, Dif name function for Firefox, safari etc + this keyword is generated)
+NOT Defined vs Undefined
+	Not defined —> indicated variable is not being allocated any memory in the script and is not known w.r.t script. 
+	Undefined —> indicates that there exists something and is assigned memory with a special value “undefined”. It is like that something exists but its value is not known yet. So, for the time being, undefined is allocated to that. Whenever in the code, we get the value of that variable or function, then that value will be assigned and undefined will be removed. 
+			(Variable is not known) vs (Variable is known but its value is not known) 
+Lexical Scope —> local context + scope of parent
+Scope Chain —> hierarchy of scopes (environments) that the JS engine traverses to resolve variable identifiers.
+	When you try to access a variable, JavaScript looks:
+		- In the current (local) scope
+		- If not found, it goes to the outer (parent) scope
+		- Continues going up until it reaches the global scope
+	This chain of scopes is called the scope chain.
+Block —> used for grouping multiple JS statements. Can be used at places where JS syntax expects single line. Represented by {}. 
+VAR is lexical scoped while LET and CONST are block scoped only. i.e. VAR declared in lexical scope is basically declared in local scope +  parent scope also.  
+Shadowing —> If same data type key is declared in different scopes, then var, let, const values in local scope shadows the parent scope values. 
+Closure is a function along with its lexical scope. With help of closure, Every function in JavaScript **"remembers" the environment in which it was defined.  
+Applications of closures are listed below: 
+	- Module Design Pattern —> A way to encapsulate private variables and expose only what's necessary
+	- Currying —> Transforming a function with multiple arguments into a sequence of functions, each taking a single argument.
+				  ✨ How closure helps:
+					Each function remembers the arguments passed to the previous one via closure.
+					Ex: 
+						function multiply(a) {
+  						return function(b) {
+						    return a * b;
+						  };
+						}
+						const double = multiply(2);
+						console.log(double(5)); // 10
+					Arrow func Ex: 
+						const multiply = a => b => a * b;
+	- Functions like once
+	- Memoize
+	- Maintaining
+	- SetTimeout
+	- Iterators etc. 
+Disadvantages of closures:
+	- two much memory utilisation as variables are not garbage collected
+Closure Trap —>  function run() {
+  var count = 1;
+
+  for (var i = 1; i <= 5; i++) {
+    setTimeout(function () {
+      console.log(count); // prints 6 five times!
+      count++;
+    }, i * 1000);
+  }
+}
+
+run(); SOLUTION is using let instead of var. or using IIFE  for (var i = 1; i <= 5; i++) {
+  (function (iCopy) {
+    setTimeout(function () {
+      console.log(iCopy);
+    }, iCopy * 1000);
+  })(i);
+}
+  
+——————Functions ———————
+Function statement —> similar to function declaration
+Function declarations —> function initialised with “function” keyword 
+Function expression —> function declared as value of another variable. 
+Named Function expression —> function expression with name. (That name can only be accessed inside the function itself) Used for recursion
+Anonymous function —> function with no name
+First Class Functions —> ability of function to be used as values, passed in the arguments, returned from the function  and stored in arrays or objects just like any other value like strings, numbers, objects etc. 
+Higher Order Function —> function that takes another function as input parameter or returns any function. 
+	x(function y () {console.log(“hello”)}); —> In this example y is first class function and x is high order function. 
+Parameter —> placeholder for value passed in function declaration
+Argument —> value passed when function is called 
+Arrow function —> Introduced in ES6 — shorter function syntax that also does not have its own this, arguments, or prototype.
+IIFE —> runs immediately after its declaration. 
+		(function () {
+ 		 console.log("I'm an IIFE!");
+		})(); // ✅ Runs immediately
+
+		// With arrow function:
+		(() => {
+		  console.log("IIFE with arrow!");
+		})();
+Once function —> function that can only be called once. 
+Callback function —> function that is passed as an argument to another function, and is called ("called back") later
+Callback function and its application
+Event Listeners , should be removed as they are heavy
+
+THIS function 
+- If you’re inside a callback and want access to the parent this, use an arrow function.
+Callback queue // Task queue —> callback functions, setTimeout, 
+- Starvation of callback queue 
+Microtask queue —> promises, mutation observer , async-await, then-catch-fianlly, queueMicrotask(){}
+EVENT LOOP —> its duty is to check if call stack is empty or not and then push the contents of microtask and callback queue to the call stack for execution. Microtask has higher preference than callback queue. 
+Browser Web API’s —> DOM API, setTimeout, fetch API, network API, console, location, storage, Bluetooth, Wifi etc
+SetTimeout —> waits at-least specified time but not exactly that much time.  SetTimeout defines the time when this function gets added to callback queue. 
+setInterval —> 
+
+Callback Hell and its disadvantages: 
+- Inversion of Control
+- 
+Promise is an object that represent s eventual completion of asynchronous object. 
+Promise is immutable, can be resolved only once, has to be in any of the following state(pending, fulfilled, rejected). Promise gives data object as a readable stream. —> This gives security, trust and assurance that promise will be executed only once for sure and cannot be inconsistent. 
+Promise prevents inversion of control as instead of passing the callback function into another function, we attach the callback function to promise which gets executed when promise is resolved or data object is filled with value. 
+Chaining of Promise means result of one promise can be passed to another promise. But this requires previous promise to be returned. I.e. Return statement is compulsory. 
+Then and catch should aways be callback function. Why ?? What happens if they are not callback  functions. 
+Promise.all([array of promises]) gets rejected as soon as any one of the promise fails and not wait for other promises’s result.  —————> FAST FAILS  (either all succeed or fail fast)
+	and gets resolved only when all of the promises gets resolved independently. and waits till all of them succeed. ————> WAITS TILL ALL SUCCEED 
+Promise.allSettled([array of promises]) returns the result of all the promises whether they get resolved or rejected. So, it waits for all of them to give result. Outputs an OBJECT    —————> SETTLES ALL and WAITS 
+Promise.race([array of promises]) returns result of first settled promise whether rejected or resolved. —————> SETTLES FAST and NO WAIT
+Promise.any([array of promises]) returns the first resolved promise. ——————> FAST SUCCEEDS 
+	and gets rejected if all of the promises fails. And gives Aggregate error. Waits till all fails. 
+	——— Promise.all((either all succeed or fail fast)) vs Promise.any (either succeed fast or all fail) ————
+        ————————— Promise.allSettled (waits for all) vs Promise.race (fast) ——————
+
+Where do Promises should be used in order to non block the call stack and let async tasks happen in the background. 
+	- fetch calls
+	- network calls (geolocation)
+	- db calls 
+	- event handler calls
+	- setTimeout
+	- file handling 
+	- Storage 
+	- Performance API 
+All the above situations are handled by Web API’s and JS Engine natively has no support for any of the above. Rather, Javascript runtime Environment has access to all these. 
+
+ASYNC function always returns a promise 
+AWAIT can only be used inside an asynchronous function. All other places give Syntax Error. 
+	- Instructs JS Engine to wait till promise settles. But it does not block the call stack. When JS Engine sees await keyword, it suspends the execution of main async function. 
+	- And waits for the promise to be settled. After which, main async function again appears in the call stack and resumes its working from where it left. 
+	- After async keyword, all the await promises are started at the same time. 
+
+
+Classes concept in JS
+WeakMap, Map, Obj, Set,  Proxy, Generator, Symbol, Reflect —> 
+Array Destructuring —> 
+Object Destructuring —> const {name, age} = person
+Rest Operator
+Spread Operator —> …
+
+This function 
+	global object in browser is window
+	global object in nodejs is global
+this refers to the object that is executing the current function.
+Its value depends on how the function is called, not where it's defined.
+
+✅ 5 Common Rules of this:
+Situation	this refers to...
+Regular function (non-strict)	Global object (window in browser)
+Regular function (strict mode)	undefined
+Method inside object	That object
+Arrow function	Inherits from enclosing (lexical) scope
+Inside constructor	The newly created object (new keyword)
+Using call, apply, bind	The explicitly provided context
+Call, apply, bind  
+Map, filter, reduce, sort  
+Event Listeners —> Event bubble ling and Capturing  
+Try-Catch —> 
+
+
+
+Parsing (AST) —> Compiling(inlining+copy elision+line caching)  —> Execution 
+Just In Time Compilation (JIT Compilation) —> compiler + Interpretor
+
+For v8 engine
+    - Compiler is TurboFan 
+    - Interpretor is Ignition
+    - =Garbage Collector is Orinoco (Mark ans Sweep Algo)
+Architectural Diagram of V8 Engine is as follows:
+￼
+
+Types of Scopes in js: 
+		Global Scope, Function Scope, Block Scope, Lexical Scope, Module Scope, Script Scope, Closure Scope
+Event Bubbling —> Whenever child element is clicked in the DOM, its parent element also gets clicked. The Event(Click in this case) is bubbled out at the DOM Level till it reaches the top. So, the order will be something like: child —> parent —> grandparent
+Event Capturing —> Event capturing is opposite flow of Event Bubbling. Functionality is same that in case of event happening in child div, its parent ad then grandparent will be called. But this time, the execution flow will be something like: grandparent —> parent —> child. This is what we say Event trickling or Event Capturing. Can be enabled by setting third argument(which is useCapture) in event listeners to true. By default, it is set to false.  Default flow —> Event capturing is always executed first and the event bubbling happens and this flow executes in every scenario. It’s just that we can say js to print which ever flow we want by using the third argument(useCapture) of event listener method. 
+This Event Propagation is an Expensive task. This can be stopped via e.stopPropagation(). 
+Event Delegation —> Event delegation is a technique where a single event listener is attached to a parent element to handle events from its child elements, using event bubbling. It Works only at the time of event bubbling and not capturing. So, e.stopPropagation() method should not be used in order to enable event delegation. 
+
+Debouncing. —> 
+
+
+TOPICS TO REMEMBER: 
+Hoisting
+Coercion rules (+ vs -)
+Function declarations vs expressions
+Global variable leaks
+Closures
+this keyword
+Event loop / async behaviour
+setTimeout + loop closures
+typeof null bug
+Double negation (!!)
+Object key coercion ([object Object])
+
+
+
+
+
+Note: 
+- null is a primitive but typeof null === "object" due to a historic bug.
+- Functions are objects (typeof fn === "function", a special case).
+- 
+
+
+ Extra questions:
+1. console.log(+true)
+2. 
+
+
+
+
+
+
+
+
