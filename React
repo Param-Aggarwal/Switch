@@ -3,6 +3,7 @@ React
 
 
 React is library to manage SPA. 
+One Way data binding. 
 
 React Rendering —> 
 - React makes copy of real DOM called VIRTUAL DOM, makes changes to that first as it is less expensive and fast, identifies difference with respect to Real DOM, and then applies only the reqd changes to REAL DOM. 
@@ -12,8 +13,42 @@ React Rendering —>
     * Objects (const obj = {})
 - This is why hooks like useCallback and useMemo exist: to preserve reference identity between renders when needed.
 
+Client Side Rendering —> 
+- All the bundled code(in form of HTML, CSS, JS files) is sent to client, and rendering of the web components happen in the client side only. Painting of the Dom happens at the client side only. 
+- Processing for creation of Html elements from js happens at the client side, whenever the call is made for the website. 
 
- URL based Routing —> 
+Server Side Rendering —>  
+- The bundled code (HTML, CSS) is processed on the server side beforehand and stored in cache/DNS and is sent to the client as is. This reduces initial loading time on the client and increases UX. 
+- Here, React app is also sent to the client(in form of HTML, CSS, JS) in the background. 
+- And after the initial rendering of the pre-loaded HTML/CSS, whole react component renders again in the client, and JS is hydrated to the elements in runtime. 
+- This re-rendering does not change any pre-loaded HTML elements(because the code is same before and after). Thus, the JS part is attached to the elements at the runtime so smoothly, that the client does not feel any change in UI. And hence does not degrade UX. 
+- Note: Whole React APP is rendered again on the client but it feels like that only JS is attached at the client side because the initial loaded HTML, CSS is same afterwards also. 
+
+Hydration Failure —> 
+- Sometimes, there occurs a difference between pre-loaded HTML, CSS components and re-rendered HTML, CSS, JS components. 
+- This may occur due to some change in HTML while attaching JS. This may result in error in the UI. This is called Hydration Failure. 
+
+Static Site Generation —> 
+- Here, During the bundling of the code, whole component is pre-rendered along with HTML, CSS, JS and stored as cache/DNS. Here, website is compiled and run at the build time only. 
+- And the static site is served to the client with pre-loaded JS. All the functionality works fine. And no re-rendering of the website takes place in the background. 
+- This increase the performance significantly as server/client does not need to render every page dynamically for every request. 
+
+Incremental Site Generation —> 
+-  Whenever any new data is added, then that data is added to the static site in the incremental fashion so as to not loose the advantage of SSG. 
+- Incremental static site generation, aka incremental static regeneration (ISR), is a pattern added to static site generation that allows updating of existing pages and adding new ones, by pre-rendering a subset of pages in the background even while receiving new requests for pages.
+- Flow is something like: 
+    * During the initial site build, Next.js (often used with ISR) pre-renders static pages using getStaticProps. This means HTML is generated for these pages based on the available data at build time. 
+    * You configure a revalidate time for each page. This tells Next.js how often to check for updates. For example, revalidate: 60 means it checks for updates every 60 seconds. 
+    * When a user visits a page after its revalidation period has passed, the page will still serve the cached, static version initially. 
+    * Background Regeneration: Next.js then triggers a regeneration of that page in the background. It fetches the latest data and rebuilds the HTML. 
+    * Cache Update: Once the page is successfully regenerated, the cache is updated with the new version. 
+    * Subsequent Requests: Subsequent requests to that page will then serve the updated, cached version, ensuring that users see the latest content. 
+    * On-Demand Revalidation: If you need to update content immediately, you can use on-demand revalidation to trigger a page regeneration outside the scheduled revalidation time. 
+Hot Module Reloading —>
+- Fdvgv
+
+
+URL based Routing —> 
 
 Components —> 
 - Lifecycle of Component —> Mounting, Updating, Unmounting  
@@ -35,7 +70,6 @@ Props —>
     - Can pass anything inside props, be it variables, functions, components(child components) etc. 
     - Has problem of Prop Drilling.  
 State —> to manage data 
-
 
 
 Hooks —> 
@@ -156,6 +190,7 @@ Transition Hooks —>
         * Filtering/search —>Don’t block input while showing results
         * Large lists —> Avoid re-rendering whole list too often
         * Dependent drop-downs —> Prevent UI freezing when one state triggers heavy work
+
 - 🧠 Final Difference Recap:
     * useTransition → Runs the expensive update in the background with low priority → If a new high-priority update comes (e.g., user types again), → The previous low-priority update may be abandoned, and the new one starts
     * useDeferredValue → Delays the propagation of the input (query) to the expensive function → If input changes quickly again, it may skip earlier values → Only latest deferred value is eventually used → The expensive function is never called for intermediate values
@@ -181,6 +216,7 @@ React 19 Hooks —>
         * helps specify where to run the code (client or server)
         * implementation: “use client” or “use server” at the top of function/component file. 
 - useOptimisitic() —> 
+- useID() —> Think of useId() as a layout helper, not a data identifier.
 
 
 
@@ -195,11 +231,7 @@ React 19 Hooks —>
 
 
 
-
-
-
-
-React Query —> alias TanStack Query
+React Query —> alias TanStack Query 
 - A React library which handles fetching more efficiently
 - Handles caching and cache invalidation behind the scenes automatically. 
 - Handles refetching via “reFetchOnWindowFocus: true”
