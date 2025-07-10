@@ -196,9 +196,13 @@ Transition Hooks —>
     * useDeferredValue → Delays the propagation of the input (query) to the expensive function → If input changes quickly again, it may skip earlier values → Only latest deferred value is eventually used → The expensive function is never called for intermediate values
 * 
 Extra hooks —> 
-- useId —>
+- useId —> Think of useId() as a layout helper, not a data identifier.
     * for generating random id’s for html attributes labelling. 
-    * Can’t be used for object id’s when listing elements. 
+    * Can’t be used for object id’s when listing elements. \
+* Not used in below scenarios: 
+    * If you're styling with CSS using IDs (not recommended anyway).
+    * If you're building only one instance of the form and are okay hardcoding static IDs.
+    * If you don’t need label-input linking (e.g., placeholder-based UI).
 - useDebugValue —> 
     * only used when using react debug tools in order for debugging. 
 
