@@ -44,4 +44,25 @@ function App() {
   )
 }
 
+// import { useState } from 'react';
+
+// function App() {
+//   const [names, setNames] = useState(["Alice", "Bob", "Carol"]);
+
+//   const removeFirst = () => {
+//     setNames(names.slice(1));
+//   };
+
+//   return (
+//     <>
+//       {names.map((name, i) => (
+//         <div key={i}>
+//           <input defaultValue={name} />
+//         </div>
+//       ))}
+//       <button onClick={removeFirst}>Remove First</button>
+//     </>
+//   );
+// }
+
 export default App

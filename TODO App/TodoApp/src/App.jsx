@@ -12,7 +12,6 @@ function App() {
   const addTodo = () => {
     const todo = inputRef.current.value.trim();
     console.log("todo is --> ",todo)
-    if (todo === "") return;
     const newTodoList = [...todoList, todo];
     setTodoList(newTodoList);
     inputRef.current.value= "";
@@ -27,8 +26,15 @@ function App() {
     <>
       <div className="todoinputRef">
         <h1>Todo App</h1>
-        <input type="text" ref={inputRef} placeholder="Enter todo here" />  
-        <button onClick={addTodo}> Click to add! </button >
+        <input type="text" ref={inputRef} placeholder="Enter todo here" autoFocus tabIndex={0}
+          onKeyUp={e => { e.key === "Enter" && document.getElementById("add-btn")?.click() }}
+        />  
+        <button id="add-btn"
+          onClick={() => { inputRef.current.value.trim() !== "" && addTodo() }}
+          // onKeyUp={e => {
+          //   e.key === "Enter" && addTodo;
+          // }}
+         > Click to add! </button >
       </div>
       <ul className="todoList">
         {todoList.map((todo,index) => {
