@@ -48,6 +48,7 @@ NOT Defined vs Undefined
 	Undefined —> indicates that there exists something and is assigned memory with a special value “undefined”. It is like that something exists but its value is not known yet. So, for the time being, undefined is allocated to that. Whenever in the code, we get the value of that variable or function, then that value will be assigned and undefined will be removed. 
 			(Variable is not known) vs (Variable is known but its value is not known) 
 Lexical Scope —> local context + scope of parent
+Dynamic Scope --> in other languages, Scope is based on where the function is called, not defined. wehereas in js, scope is decided based on where the fn is defined and not called. 
 Scope Chain —> hierarchy of scopes (environments) that the JS engine traverses to resolve variable identifiers.
 	When you try to access a variable, JavaScript looks:
 		- In the current (local) scope
@@ -172,10 +173,23 @@ AWAIT can only be used inside an asynchronous function. All other places give Sy
 
 Classes concept in JS
 WeakMap, Map, Obj, Set,  Proxy, Generator, Symbol, Reflect —> 
+Map - aloows any thing as a key be it primitive type or object. it is not garbage collected and can be used in .keys and .forEach functions. 
+Generator function --> called with fucntion* (){}, it helps us control the execution of function explicitly by user. We decide when to move to the next line in the fn. 
+					function* counter() {
+						yield 1;
+						yield 2;
+						return 3;
+					}
+
+					const gen = counter();
+					console.log(gen.next()); // { value: 1, done: false }
+					console.log(gen.next()); // { value: 2, done: false }
+					console.log(gen.next()); // { value: 3, done: true }
+
 Array Destructuring —> 
 Object Destructuring —> const {name, age} = person
-Rest Operator
-Spread Operator —> …
+Rest Operator --> ...
+Spread Operator —> ...
 
 This function 
 	global object in browser is window
@@ -210,12 +224,36 @@ Architectural Diagram of V8 Engine is as follows:
 
 Types of Scopes in js: 
 		Global Scope, Function Scope, Block Scope, Lexical Scope, Module Scope, Script Scope, Closure Scope
-Event Bubbling —> Whenever child element is clicked in the DOM, its parent element also gets clicked. The Event(Click in this case) is bubbled out at the DOM Level till it reaches the top. So, the order will be something like: child —> parent —> grandparent
-Event Capturing —> Event capturing is opposite flow of Event Bubbling. Functionality is same that in case of event happening in child div, its parent ad then grandparent will be called. But this time, the execution flow will be something like: grandparent —> parent —> child. This is what we say Event trickling or Event Capturing. Can be enabled by setting third argument(which is useCapture) in event listeners to true. By default, it is set to false.  Default flow —> Event capturing is always executed first and the event bubbling happens and this flow executes in every scenario. It’s just that we can say js to print which ever flow we want by using the third argument(useCapture) of event listener method. 
+Event Bubbling —> Whenever child element is clicked in the DOM, its parent element also gets clicked. The Event(Click in this case) is bubbled out at the DOM 
+					Level till it reaches the top. So, the order will be something like: child —> parent —> grandparent
+Event Capturing —> Event capturing is opposite flow of Event Bubbling. Functionality is same that in case of event happening in child div, its parent ad then 
+					grandparent will be called. But this time, the execution flow will be something like: grandparent —> parent —> child. This is what we 
+					say Event trickling or Event Capturing. Can be enabled by setting third argument(which is useCapture) in event listeners to true. By 
+					default, it is set to false.  Default flow —> Event capturing is always executed first and the event bubbling happens and this flow executes 
+					in every scenario. It’s just that we can say js to print which ever flow we want by using the third argument(useCapture) of event 
+					listener method. 
 This Event Propagation is an Expensive task. This can be stopped via e.stopPropagation(). 
-Event Delegation —> Event delegation is a technique where a single event listener is attached to a parent element to handle events from its child elements, using event bubbling. It Works only at the time of event bubbling and not capturing. So, e.stopPropagation() method should not be used in order to enable event delegation. 
+Event Delegation —> Event delegation is a technique where a single event listener is attached to a parent element to handle events from its child elements, 
+					using event bubbling. It Works only at the time of event bubbling and not capturing. So, e.stopPropagation() method should not be used 
+		 			in order to enable event delegation. 
+Debouncing -->	Delay execution until after pause in events. Example: search box input
+				Generally when user types something in search bar, we make fetch calls at every letter typed by the user. this increases the
+				fn calls very much and increases overheads. when user types hat, our code makes three calls : h, ha, hat. But here,
+				insteadof three we can make 1 call only which is of hat, and our purpose will be served because the first two calls are
+				kind of no usage. So this overhead can be reduced by making lesser API calls. This can be achieved by debouncing and
+				throttling. throttling referees to intention delay in making theapi call and giving time to the user to type the whole
+				word. and Debouncing refers to reducing the calls by making the first call invalid whenever we receive another call.
+Throttle --> 	Executes at fixed intervals, ignoring intermediate calls
 
-Debouncing. —> 
+
+Call 
+apply 
+bind
+
+js
+Copy
+Edit
+
 
 
 TOPICS TO REMEMBER: 
@@ -231,8 +269,13 @@ typeof null bug
 Double negation (!!)
 Object key coercion ([object Object])
 
-
-
+---------- UI animation techniques ------------
+requestAnimationFrame(fn) --> requestAnimationFrame schedules fn() to run just before the next screen repaint (~60 times per second)
+								where is this used? 
+									Unlike setTimeout or setInterval, requestAnimationFrame:
+									Is synced with the browser's rendering engine
+									Pauses when the tab is inactive (saves power)
+									Ensures smooth animations
 
 
 Note: 

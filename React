@@ -5,7 +5,7 @@ React
 React is library to manage SPA. 
 One Way data binding. 
 
-React Rendering —> 
+# React Rendering —> 
 - React makes copy of real DOM called VIRTUAL DOM, makes changes to that first as it is less expensive and fast, identifies difference with respect to Real DOM, and then applies only the reqd changes to REAL DOM. 
 - By default, Reacts performs Client Side Rendering only. SSR can also be implemented fro particular case but not as easy as other library like Next.js. (in backend code, call for app component has to be made, then on frontend, that rendered server side component has to be hydrated with js on frontend)
 - In React, functions and variables declared inside a component body are re-created on every render. This includes:
@@ -13,18 +13,18 @@ React Rendering —>
     * Objects (const obj = {})
 - This is why hooks like useCallback and useMemo exist: to preserve reference identity between renders when needed.
 
-Client Side Rendering —> 
+## Client Side Rendering —> 
 - All the bundled code(in form of HTML, CSS, JS files) is sent to client, and rendering of the web components happen in the client side only. Painting of the Dom happens at the client side only. 
 - Processing for creation of Html elements from js happens at the client side, whenever the call is made for the website. 
 
-Server Side Rendering —>  
+## Server Side Rendering —>  
 - The bundled code (HTML, CSS) is processed on the server side beforehand and stored in cache/DNS and is sent to the client as is. This reduces initial loading time on the client and increases UX. 
 - Here, React app is also sent to the client(in form of HTML, CSS, JS) in the background. 
 - And after the initial rendering of the pre-loaded HTML/CSS, whole react component renders again in the client, and JS is hydrated to the elements in runtime. 
 - This re-rendering does not change any pre-loaded HTML elements(because the code is same before and after). Thus, the JS part is attached to the elements at the runtime so smoothly, that the client does not feel any change in UI. And hence does not degrade UX. 
 - Note: Whole React APP is rendered again on the client but it feels like that only JS is attached at the client side because the initial loaded HTML, CSS is same afterwards also. 
 
-Hydration Failure —> 
+## Hydration Failure —> 
 - Sometimes, there occurs a difference between pre-loaded HTML, CSS components and re-rendered HTML, CSS, JS components. 
 - This may occur due to some change in HTML while attaching JS. This may result in error in the UI. This is called Hydration Failure. 
 
@@ -33,7 +33,7 @@ Static Site Generation —>
 - And the static site is served to the client with pre-loaded JS. All the functionality works fine. And no re-rendering of the website takes place in the background. 
 - This increase the performance significantly as server/client does not need to render every page dynamically for every request. 
 
-Incremental Site Generation —> 
+## Incremental Site Generation —> 
 -  Whenever any new data is added, then that data is added to the static site in the incremental fashion so as to not loose the advantage of SSG. 
 - Incremental static site generation, aka incremental static regeneration (ISR), is a pattern added to static site generation that allows updating of existing pages and adding new ones, by pre-rendering a subset of pages in the background even while receiving new requests for pages.
 - Flow is something like: 
@@ -44,14 +44,14 @@ Incremental Site Generation —>
     * Cache Update: Once the page is successfully regenerated, the cache is updated with the new version. 
     * Subsequent Requests: Subsequent requests to that page will then serve the updated, cached version, ensuring that users see the latest content. 
     * On-Demand Revalidation: If you need to update content immediately, you can use on-demand revalidation to trigger a page regeneration outside the scheduled revalidation time. 
-Hot Module Reloading —>
+## Hot Module Reloading —>
 - Fdvgv
 
 
-URL based Routing —> 
+# URL based Routing —> 
 
-Components —> 
-- Lifecycle of Component —> Mounting, Updating, Unmounting  
+# Components —> 
+- Lifecycle of Component —> Mounting, Updating, Unmounting 
 Controlled Components —> 
 - We change components based on the change in state which is controlling that component
 Pure and Impure Components —> 
@@ -62,7 +62,16 @@ Portal Component —>
 Suspense component—> 
 - used as fallback when data takes time to load. 
 
-
+# Intro --> 
+React -->  is the library only for defining React Components, React Elements and Component instances. Also, provides the diffing algo.
+React Element -->  JS Object with properties such as: keys, props, type, <component-name>  etc. 
+Reconciliation --> 
+    - Generating of React element Tree in form of plain js objects. DOM Tree is basically a js object with multiple nested component objects. 
+Virtual DOM vs Real DOM
+React Renderer --> 
+    - Generates DOM Tree from these elements and components and not React itself. React can be rendered differently for web, mobile etc. 
+    - So, react is not web specific or mobile specific. It is generic and Renderer differenties its implementaiton on different environments. 
+    - We can slso create our own React Renderer for custom implmenetation of React. 
 JSX —> JS with XML , dynamic rendering possible with JSX opposite to HTML Static rendering. 
 Props —> 
     - Used to pass properties onto child component. 
@@ -70,9 +79,34 @@ Props —>
     - Can pass anything inside props, be it variables, functions, components(child components) etc. 
     - Has problem of Prop Drilling.  
 State —> to manage data 
+Keys --> 
+    - Index should not be used as a key because diffing also see the changes based on keys and when index changes, keys changes and hence updates the whole component altogether which is very inefiicient. 
+
+# React Fiber 
+    - plain old js with some objects and properties 
+    - Async ~~library~~ which focuses on animations and responsiveness 
+    - It is a new reconciler came in React v15. Old Reconciler was Stack(sync, implmeemntaiton: stack). 
+    - Fiber is generated fom React Element itself. 
+    - Fiber Properties -> tag(defines 1-1 relationship with element), child, sibling, return, alternate etc. 
+    - Fiber Tree is created from React Elements and then is executed smartly which increases performance
+    - Smartly means Fiber breaks work into smaller chunks and schedules them according to their priority. fiber can do this becasue of time Slicing ability in Fiber which React did not have. 
+    - Works in 2 phases: 
+        - Render Phase --> 
+            - Determines which nodes to be inserted, updated, deleted + which components needs lifecylce methods called. 
+            - All of this info is stored in EFFECT List   
+            - beginWork() --> going down the tree , completeWork() --> moving up the tree
+        - Commit Phase --> 
+            - All the changes done to copy tree and then reference of actual tree is swapped with copy tree to relect changes in UI.  
+            - commitWork() 
+    - Usages / Applications: 
+        - Error Boundaries
+        - Suspense and concurrent Mode
 
 
-Hooks —> 
+    
+
+
+# Hooks —> 
 - Hooks are functions which allows us to hook and manage states. 
 - Lets us add state and other features to our functional components without using class based components. 
 - GPT Link for Hooks: https://chatgpt.com/c/683c5e61-ccdc-8001-b424-70e94cc4955b (In Depth analysis)
@@ -235,7 +269,7 @@ React 19 Hooks —>
 
 
 
-React Query —> alias TanStack Query 
+# React Query —> alias TanStack Query 
 - A React library which handles fetching more efficiently
 - Handles caching and cache invalidation behind the scenes automatically. 
 - Handles refetching via “reFetchOnWindowFocus: true”
@@ -251,3 +285,6 @@ Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only
 
 
 
+
+Dispatch fn
+Lifecycle Methods
