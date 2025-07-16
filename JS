@@ -190,7 +190,8 @@ AWAIT can only be used inside an asynchronous function. All other places give Sy
 
 Classes concept in JS
 WeakMap, Map, Obj, Set,  Proxy, Generator, Symbol, Reflect —> 
-Map - aloows any thing as a key be it primitive type or object. it is not garbage collected and can be used in .keys and .forEach functions. 
+Map - allows any thing as a key be it primitive type or object. it is not garbage collected and can be used in .keys and .forEach functions. 
+Weak Map --> only allows object as keys and is garbage collected when not in use. 
 Generator function --> called with fucntion* (){}, it helps us control the execution of function explicitly by user. We decide when to move to the next line in the fn. 
 					function* counter() {
 						yield 1;
@@ -202,13 +203,26 @@ Generator function --> called with fucntion* (){}, it helps us control the execu
 					console.log(gen.next()); // { value: 1, done: false }
 					console.log(gen.next()); // { value: 2, done: false }
 					console.log(gen.next()); // { value: 3, done: true }
-Prototype Inheritance flow --> 
-	Instance (obj) links to constructor’s .prototype via __proto__
-	Methods are looked up through this prototype chain (if not found on the object itself)
-	The prototype chain ends at Object.prototype, whose __proto__ is null
-	✅ Just remember:
-		object → __proto__ → constructor.prototype → Object.prototype → null
-	This is how JavaScript resolves property/method access!
+Prototype Inheritance  --> prototypal inheritance allows objects to inherit properties and methods directly from other objects.
+							then you try to access a property or method on an object, JavaScript first looks for it on 
+							that object itself. If it doesn't find it, it looks up the prototype chain until it 
+							finds the property or reaches null.
+			- Object.SetPrototypeOf(obj1,obj2) --> js first look for method in obj1, then its prototype i.e. Obj2, then Oj2's 
+			(similar to obj1.__proto__ = obj2)		prototype if any and so on....
+			- Prototype Inheritacne does not require explicitly making classes to share mehtods across different objects. 
+			- Prototype Inheritance does not even require to instantiate object with the method. It just calls another's 
+			method by just settingthe prototype object. 
+			- It even attaches the existing objects with newly created prototypes. even at runtime !!!!
+			- Instance (obj) links to constructor’s .prototype via __proto__
+			- Methods are looked up through this prototype chain (if not found on the object itself)
+			- The prototype chain ends at Object.prototype, whose __proto__ is null
+			- ✅ Just remember:
+				object → __proto__ → constructor.prototype → Object.prototype → null
+			- This is how JavaScript resolves property/method access!
+
+Polyfills -->  provide modern JavaScript and Web API functionalities to older browsers. You use them by including a script
+	that defines the missing features, allowing your code to run uniformly across different environments.
+
 
 Array Destructuring —> 
 Object Destructuring —> const {name, age} = person
