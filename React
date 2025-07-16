@@ -1,6 +1,11 @@
-React 
-
-
+React Todo --> 
+    1. Table 
+    2. Form
+    3. Hooks
+    4. Debouncing, Throttling
+    5. Fetch api calls, 
+    6. Tailwind
+    7. Lifecycle of hook
 
 React is library to manage SPA. 
 One Way data binding. 
@@ -101,8 +106,6 @@ Keys -->
     - Usages / Applications: 
         - Error Boundaries
         - Suspense and concurrent Mode
-
-
     
 
 
@@ -121,7 +124,8 @@ State Hooks —>
     * Outputs —> state object + dispatch function which changes the state based on actions. This function (dispatch) is called whenever this hook is triggered. 
 
 Effect Hooks —> 
-Used for dealing with external systems or doing things cannot be done by any other hook
+Used for dealing with external systems or doing things cannot be done by any other hook. * React schedules effects after painting to the screen**, not during render.
+
 - useEffect —> 
     * Is asynchronous in nature
     * used to perform side effects 
@@ -134,13 +138,14 @@ Used for dealing with external systems or doing things cannot be done by any oth
     * For eg: if isPlaying == true, then instruct the video element to play, otherwise stop. 
 - useLayoutEffect —> 
     * stricter version of use Effect. 
-    * Runs before rendering the page for the first time. 
+    * Runs before rendering the page for the first time. -->  After DOM mutations but before paint
     * Is synchronous. Helpful in getting details from browser at runtime and then using them to load data. 
     * Use Case: find out client layout measurement and setting them in state even before rendering. 
 - useInsertionEffect —> 
-    * Runs before the above two. Even before rendering the ui. I
-    * s synchronous. To add styles to a particular js elements. 
-    - ￼
+    * Runs before the above two. Even before rendering the ui. 
+    * Is synchronous. 
+    * To add styles to a particular js elements. 
+
 
 Context Hooks —> 
 - useContext —> Instead of prop Drilling, we use this hook to provide global context to our parent component and then can use it anywhere inside the child component even if it is 3-4-5 levels deep. 
@@ -157,6 +162,7 @@ Context Hooks —>
         * Theme Switching
         * Authentication Context
         * Language Settings etc. 
+
 
 Ref hooks —> 
 - useRef —> 
@@ -275,7 +281,8 @@ React 19 Hooks —>
 - Handles refetching via “reFetchOnWindowFocus: true”
 - useInfiniteQuery() —>  for infinite scrolling data. 
 - Optimistic Updates 
-Other Info —> 
+
+# Other Info —> 
 Global State —> to avoid prop drilling to multiple levels, we can make a global state using Context API or Redux. 
 Key Prop —> every item in the list should have a unique identifier named key. So that React knows exactly which element is to be updated, removed or whatever. 
 Event Handling —> directly reference the function inline inside the curly braces with camelCase event name. Like onClick={handleClick}, onSubmit{handleSubmit}, onChange{handleChange} etc. 

@@ -1,5 +1,4 @@
 JS
-
 1. JS is a Synchronous single-threaded language
 2. Every variable is assigned value “undefined” at start. 
 3. JS is loosely typed language (can define variable but not assign any value, undefined will be assigned for the time being)
@@ -100,6 +99,24 @@ run(); SOLUTION is using let instead of var. or using IIFE  for (var i = 1; 
   })(i);
 }
   
+
+
+
+🔁 Shallow Copy:
+Copies only the first level. Nested objects still share references.
+	✅ Shallow Copy Methods:
+	- Object.assign({}, obj)
+	- Spread syntax: { ...obj } or [...arr]
+	- Array.prototype.slice()
+
+🧠 Deep Copy:
+Copies all nested levels, recursively.
+	Deep Copy Methods:
+	- JSON.parse(JSON.stringify(obj) → works for JSON-safe objects only --> does not work with functions, `undefined`, etc.
+	- structuredClone(obj) → native, supports most types (✅ better choice)
+	- Libraries like lodash.cloneDeep()
+
+
 ——————Functions ———————
 Function statement —> similar to function declaration
 Function declarations —> function initialised with “function” keyword 
@@ -185,6 +202,13 @@ Generator function --> called with fucntion* (){}, it helps us control the execu
 					console.log(gen.next()); // { value: 1, done: false }
 					console.log(gen.next()); // { value: 2, done: false }
 					console.log(gen.next()); // { value: 3, done: true }
+Prototype Inheritance flow --> 
+	Instance (obj) links to constructor’s .prototype via __proto__
+	Methods are looked up through this prototype chain (if not found on the object itself)
+	The prototype chain ends at Object.prototype, whose __proto__ is null
+	✅ Just remember:
+		object → __proto__ → constructor.prototype → Object.prototype → null
+	This is how JavaScript resolves property/method access!
 
 Array Destructuring —> 
 Object Destructuring —> const {name, age} = person
@@ -198,13 +222,14 @@ this refers to the object that is executing the current function.
 Its value depends on how the function is called, not where it's defined.
 
 ✅ 5 Common Rules of this:
-Situation	this refers to...
+-----Situation-----				-----this refers to-----
 Regular function (non-strict)	Global object (window in browser)
 Regular function (strict mode)	undefined
-Method inside object	That object
-Arrow function	Inherits from enclosing (lexical) scope
-Inside constructor	The newly created object (new keyword)
-Using call, apply, bind	The explicitly provided context
+Method inside object			That object
+Arrow function					Inherits from enclosing (lexical) scope
+Inside constructor				The newly created object (new keyword)
+Using call, apply, bind			The explicitly provided context
+
 Call, apply, bind  
 Map, filter, reduce, sort  
 Event Listeners —> Event bubble ling and Capturing  
@@ -276,6 +301,7 @@ requestAnimationFrame(fn) --> requestAnimationFrame schedules fn() to run just b
 									Is synced with the browser's rendering engine
 									Pauses when the tab is inactive (saves power)
 									Ensures smooth animations
+	
 
 
 Note: 
