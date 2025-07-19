@@ -56,16 +56,15 @@ Static Site Generation —>
 # URL based Routing —> 
 
 # Components —> 
-- Lifecycle of Component —> Mounting, Updating, Unmounting 
 Controlled Components —> 
-- We change components based on the change in state which is controlling that component
+    - We change components based on the change in state which is controlling that component
 Pure and Impure Components —> 
 Strict Component —> 
-- wrapped around App Component to help us be safer and prevent errors. 
+    - wrapped around App Component to help us be safer and prevent errors. 
 Portal Component —> 
-- used when Particular component is to be loaded at specific place under specific component every time. 
+    - used when Particular component is to be loaded at specific place under specific component every time. 
 Suspense component—> 
-- used as fallback when data takes time to load. 
+    - used as fallback when data takes time to load. 
 
 # Intro --> 
 React -->  is the library only for defining React Components, React Elements and Component instances. Also, provides the diffing algo.
@@ -77,15 +76,57 @@ React Renderer -->
     - Generates DOM Tree from these elements and components and not React itself. React can be rendered differently for web, mobile etc. 
     - So, react is not web specific or mobile specific. It is generic and Renderer differenties its implementaiton on different environments. 
     - We can slso create our own React Renderer for custom implmenetation of React. 
+    - The default renderer used by React for web applications is --> *** React DOM Renderer ***
+    - Other renderer examples are as follows: 
+            ---Renderer---  	---Platform---- 	----Package----
+            React DOM	        Web Browsers	    react-dom
+            React Native	    iOS / Android	    react-native
+            React Three Fiber	WebGL / 3D	        @react-three/fiber
+            Ink	                Terminal (CLI)	    ink
+            React PDF	        PDF Documents	    @react-pdf/renderer
+Babel --> 
+    - compiler used by React to convert JSX to JS internally. 
+    - <h1>Hello</h1> is converted to React.createElement("h1") and so on.... 
+Webpack -->  
+    - powerful JavaScript module bundler. 
+    - In a React project, it takes all your .js, .jsx, .css, .svg, etc., files and bundles them into a few optimized files that a browser can understand. 
+        --🔧 Feature ---                ------💡 Purpose ------
+        Code Bundling	            Combines many files into one or a few (e.g., main.js)
+        Code Splitting	            Splits code into smaller chunks (for lazy loading)
+        Tree Shaking    	        Removes unused code from bundles
+        Hot Module Replacement  	Updates components in the browser without full reload
+        Asset Management	        Handles CSS, images, fonts, etc.
+        Transpilation	            Works with Babel to convert JSX and ES6+ to browser-friendly JS
+Speedy Web Compiler --> 
+    - SWC plays the role of Babel and Vite handles bundling like Webpack, but together they're much faster and simpler to use.
+
+
 JSX —> JS with XML , dynamic rendering possible with JSX opposite to HTML Static rendering. 
 Props —> 
-    - Used to pass properties onto child component. 
+    - Used to pass properties onto child component. Has uni-directional flow.  
     - It is an Object. 
     - Can pass anything inside props, be it variables, functions, components(child components) etc. 
-    - Has problem of Prop Drilling.  
+    - Has problem of Prop Drilling.
+    - Props are immutable in the child component. (read only)
+    - If you have to change spmething, then it can be changes only by calling funntion which is passed to it as prop. 
+    - *** Default props *** values can be decalred. Component.defautProps = {age: 10, name: "XXXX"}
+    - Using *** prop-types *** package so as to avoid type errors. component.propTypes={name: PropTypes.string.isRequired, age: Proptypes.number}. These Values can be --> array, bool, func, object, element, etc.
 State —> to manage data 
 Keys --> 
     - Index should not be used as a key because diffing also see the changes based on keys and when index changes, keys changes and hence updates the whole component altogether which is very inefiicient. 
+Lifecycle of React Hooks/Components --> 
+    1. Mounting Phase (Component is created and added to the DOM) --> runs just after mounting of the component
+        Function based components --> useEffect(){} 
+        Class based components --> ComponentDidMount(){}
+    2. Updating Phase (Component updates due to state or props change) --> runs when updating the component
+        Function based components --> useEffect(){  , [count]} // runs when count changes
+        Class based components --> ComponentDidUpdate(prevProps,prevState){}
+    3. Unmounting Phase (Component is removed from the DOM) --> runs just before unmounting of the component
+                Function based components --> useEffect(){() => {
+                    return () => {}
+                }, [] } 
+        Class based components --> ComponentWillUnmount(){} //cleanup like removing event listeners
+
 
 # React Fiber 
     - plain old js with some objects and properties 
@@ -294,4 +335,3 @@ Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only
 
 
 Dispatch fn
-Lifecycle Methods
