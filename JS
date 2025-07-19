@@ -61,6 +61,7 @@ Closure is a function along with its lexical scope. With help of closure, Every 
 Applications of closures are listed below: 
 	- Module Design Pattern —> A way to encapsulate private variables and expose only what's necessary
 	- Currying —> Transforming a function with multiple arguments into a sequence of functions, each taking a single argument.
+					A single funciton taking multiple arguments can be divided into multiple functions. And this can be used for partial function calling. 
 				  ✨ How closure helps:
 					Each function remembers the arguments passed to the previous one via closure.
 					Ex: 
@@ -147,8 +148,9 @@ THIS function
 - If you’re inside a callback and want access to the parent this, use an arrow function.
 Callback queue // Task queue —> callback functions, setTimeout, 
 - Starvation of callback queue 
-Microtask queue —> promises, mutation observer , async-await, then-catch-fianlly, queueMicrotask(){}
-EVENT LOOP —> its duty is to check if call stack is empty or not and then push the contents of microtask and callback queue to the call stack for execution. Microtask has higher preference than callback queue. 
+Microtask queue —> promises, mutation observer , async-await, then-catch-finally, queueMicrotask(){}
+EVENT LOOP —> its duty is to check if call stack is empty or not and then push the contents of microtask and callback queue to the call stack for execution. 
+				Microtask has higher preference than callback queue. 
 Browser Web API’s —> DOM API, setTimeout, fetch API, network API, console, location, storage, Bluetooth, Wifi etc
 SetTimeout —> waits at-least specified time but not exactly that much time.  SetTimeout defines the time when this function gets added to callback queue. 
 setInterval —> 
@@ -157,18 +159,24 @@ Callback Hell and its disadvantages:
 - Inversion of Control
 - 
 Promise is an object that represent s eventual completion of asynchronous object. 
-Promise is immutable, can be resolved only once, has to be in any of the following state(pending, fulfilled, rejected). Promise gives data object as a readable stream. —> This gives security, trust and assurance that promise will be executed only once for sure and cannot be inconsistent. 
-Promise prevents inversion of control as instead of passing the callback function into another function, we attach the callback function to promise which gets executed when promise is resolved or data object is filled with value. 
-Chaining of Promise means result of one promise can be passed to another promise. But this requires previous promise to be returned. I.e. Return statement is compulsory. 
+Promise is immutable, can be resolved only once, has to be in any of the following state(pending, fulfilled, rejected). Promise gives data object as a readable 
+stream. —> This gives security, trust and assurance that promise will be executed only once for sure and cannot be inconsistent. 
+Promise prevents inversion of control as instead of passing the callback function into another function, we attach the callback function to promise which gets 
+executed when promise is resolved or data object is filled with value. 
+Chaining of Promise means result of one promise can be passed to another promise. But this requires previous promise to be returned. I.e. Return statement is
+ compulsory. 
 Then and catch should aways be callback function. Why ?? What happens if they are not callback  functions. 
-Promise.all([array of promises]) gets rejected as soon as any one of the promise fails and not wait for other promises’s result.  —————> FAST FAILS  (either all succeed or fail fast)
+Promise.all([array of promises]) gets rejected as soon as any one of the promise fails and not wait for other promises’s result.  —————> FAST FAILS  
+(either all succeed or fail fast)
 	and gets resolved only when all of the promises gets resolved independently. and waits till all of them succeed. ————> WAITS TILL ALL SUCCEED 
-Promise.allSettled([array of promises]) returns the result of all the promises whether they get resolved or rejected. So, it waits for all of them to give result. Outputs an OBJECT    —————> SETTLES ALL and WAITS 
+Promise.allSettled([array of promises]) returns the result of all the promises whether they get resolved or rejected. So, it waits for all of them to give 
+result. Outputs an OBJECT    —————> SETTLES ALL and WAITS 
 Promise.race([array of promises]) returns result of first settled promise whether rejected or resolved. —————> SETTLES FAST and NO WAIT
 Promise.any([array of promises]) returns the first resolved promise. ——————> FAST SUCCEEDS 
 	and gets rejected if all of the promises fails. And gives Aggregate error. Waits till all fails. 
-	——— Promise.all((either all succeed or fail fast)) vs Promise.any (either succeed fast or all fail) ————
-        ————————— Promise.allSettled (waits for all) vs Promise.race (fast) ——————
+
+	-----------——— Promise.all((either all succeed or fail fast)) vs Promise.any (either succeed fast or all fail) ————---------
+        -————————— Promise.allSettled (waits for all) vs Promise.race (fast) ——————--------
 
 Where do Promises should be used in order to non block the call stack and let async tasks happen in the background. 
 	- fetch calls
@@ -179,11 +187,13 @@ Where do Promises should be used in order to non block the call stack and let as
 	- file handling 
 	- Storage 
 	- Performance API 
-All the above situations are handled by Web API’s and JS Engine natively has no support for any of the above. Rather, Javascript runtime Environment has access to all these. 
+All the above situations are handled by Web API’s. JS Engine natively has no support for any of the above. Rather, Javascript runtime Environment has access
+ to all these. 
 
 ASYNC function always returns a promise 
 AWAIT can only be used inside an asynchronous function. All other places give Syntax Error. 
-	- Instructs JS Engine to wait till promise settles. But it does not block the call stack. When JS Engine sees await keyword, it suspends the execution of main async function. 
+	- Instructs JS Engine to wait till promise settles. But it does not block the call stack. When JS Engine sees await keyword, it suspends the execution of 
+	main async function. 
 	- And waits for the promise to be settled. After which, main async function again appears in the call stack and resumes its working from where it left. 
 	- After async keyword, all the await promises are started at the same time. 
 
@@ -280,8 +290,8 @@ Debouncing -->	Delay execution until after pause in events. Example: search box 
 				fn calls very much and increases overheads. when user types hat, our code makes three calls : h, ha, hat. But here,
 				insteadof three we can make 1 call only which is of hat, and our purpose will be served because the first two calls are
 				kind of no usage. So this overhead can be reduced by making lesser API calls. This can be achieved by debouncing and
-				throttling. throttling referees to intention delay in making theapi call and giving time to the user to type the whole
-				word. and Debouncing refers to reducing the calls by making the first call invalid whenever we receive another call.
+				throttling. Debouncing referees to intention delay in making theapi call and giving time to the user to type the whole
+				word. so, Debouncing refers to reducing the calls by making the first call invalid whenever we receive another call.
 Throttle --> 	Executes at fixed intervals, ignoring intermediate calls
 
 
