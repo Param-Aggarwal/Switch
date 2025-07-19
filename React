@@ -332,6 +332,21 @@ Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only
 	Double curly braces vs Single curly braces !!?? 
 
 
+# React Dev Tools --> 
+    - Can use Debugger mode in VS Code itself by using launch.json file in .vscode location. 
+    - use React Dev tools Extension in Browser 
+        Gives Components/Profiler Section
+    - Profiler Section gives 
+        why each component re-rendered ? 
+        what time did each component take to render ? 
+        what are the actual state changes
+        DOM Tree etc. 
+    - For Next.js applicaiton, can load file launch.json form next website. Gives 3 different debugging capabilities:
+        1. Client Sdie 
+        2. Server Side
+        3. Full Stack 
+
+
 
 
 Dispatch fn
