@@ -14,14 +14,16 @@ function App() {
       <Sidebar className="flex flex-row" />
       <h1>Welcome to ChatGPT</h1>
       <label htmlFor={inputId}>  </label>
-      <input id={inputId}
-        placeholder=" Type Here !!"
+      <input type="text"
         value={inputValue}
+        placeholder="Search here"
+        style={{ padding: "8px 10px", width: "500px" }}
         onChange={(e) => setInputValue(e.target.value)}
-        className="border border-black-100 pt-1 pl-1 pr-6 pb-5 rounded"
       />
-      <button onClick={handleClick}>
-        Search 
+
+      <button onClick={handleClick}
+        style={{ padding: "8px 10px"}}>
+        O
       </button>
     </>
   )

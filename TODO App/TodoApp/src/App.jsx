@@ -9,6 +9,7 @@ function App() {
   // const [todo, setTodo] = useState('');
   const [todoList, setTodoList] = useState([]);
 
+  
   const addTodo = () => {
     const todo = inputRef.current.value.trim();
     console.log("todo is --> ",todo)
