@@ -331,6 +331,21 @@ Conditional rendering —> using Tertary operator, && or ||
 Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only inside curly braces. So, everything dynamic Js would go under curly braces. Like {variable}, {function}. 
 	Double curly braces vs Single curly braces !!?? 
 
+# React Router Dom
+
+    - location keyword in <Route> element
+    - Can use Multiple parallel <Routes> section with the same path inside a single parent component, say App and both child components (mentioned in <routes> element) will be rendered simultaneously. 
+    - useRoutes can also be used to define the routing logic instead of jsx (Routes,Route). But we still need to use BrowserRouter for wrapping the main app. it is just the replacement of routes and route elements. 
+    - <Outlet context={}>  component to render child components dynamically. 
+    - useOutletContext() to use the context passed from parent to child component in child component. 
+    - useParams() used for ? 
+    - <Link to="" replace state={} reloadDocument >Click me</Link>
+    - <NavLink /> is different from Link as it has an additional "active" property implicitly defined to identify the link on which user is currently on. Also, NavLink can also take different styling properties than link like: style, className, children along with properties possessed by Link tag. "end" keyword can also be used to end the active property when redirecting to child routes.  
+    - <Navigate> is also same as Link but redirects to another page. 
+    - UseNavigate("/") or useNAvigate(-1/-2) is a hook for the same purpose which can be used interactively in code logic when to navigate to another route. it takes 2 arguments, first is path where o route and second is properties like state and replace only and no other properties.  
+    - useSearchParams() works similar to useState but populates the URL with the value we want and can also be used in jsx like we use with useState. This is used for managing query parameters or setting the URL with parameters when fetching filtered list or searching, paginating etc. 
+    - useLocation hook used to store state info when ever that link is ci=liked and that info can be used like the state variable. it captures that info across re-renders. 
+
 
 # React Dev Tools --> 
     - Can use Debugger mode in VS Code itself by using launch.json file in .vscode location. 
@@ -350,3 +365,17 @@ Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only
 
 
 Dispatch fn
+
+
+
+
+Keywords to mention in Resume: 
+searching/paginating
+libraries -->  react, react-dom, react-router-dom, easy-peasy, axios
+hooks list -> 
+    simple: useState, useEffect, useRef, useMemo, useCallback, useReducer
+    medium --> useContext, useId, custom Hooks for fetch, debounce, throttle etc. 
+    hard --> React Query, Store and Store provider from easy-peasy, zustand, react form, redux, react table/tanstack table
+Topics for Resume / Project Keywords --> SSR/CSR/Code Splitting, Accessibility (a11y), Responsive UI with Tailwind or Styled Components, Memoization & Performance Optimization, Form Validation & Error Handling, Error Boundaries in React, Optimistic UI updates, Multi-step forms with navigation
+
+To learn topics --> Authorisation, request/response interceptor, via axios, count no. of views on site, infinite scrolling, lazy loading, server side rendering 
