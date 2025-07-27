@@ -373,7 +373,7 @@ Keywords to mention in Resume:
 searching/paginating
 libraries -->  react, react-dom, react-router-dom, easy-peasy, axios
 hooks list -> 
-    simple: useState, useEffect, useRef, useMemo, useCallback, useReducer
+    simple: useState, useEffect, useRef, useMemo, useCallback, useReducer, useContext
     medium --> useContext, useId, custom Hooks for fetch, debounce, throttle etc. 
     hard --> React Query, Store and Store provider from easy-peasy, zustand, react form, redux, react table/tanstack table
 Topics for Resume / Project Keywords --> SSR/CSR/Code Splitting, Accessibility (a11y), Responsive UI with Tailwind or Styled Components, Memoization & Performance Optimization, Form Validation & Error Handling, Error Boundaries in React, Optimistic UI updates, Multi-step forms with navigation
