@@ -1,0 +1,124 @@
+------- Give me the full flow as to how the request travels through various stakeholders(browser, gateway, loadbalancer, 
+backend, db etc) and response reaches back to client ? ---------
+Browser
+   ↓
+ DNS (shop.com → IP)
+   ↓
+[Load Balancer]
+   ↓
+[API Gateway]
+   ↓
+(Routing + Auth)
+   ↓
+[Backend Service (Order Service)]
+   ↓        ↓        ↓
+[Product] [Payment] [DB Service]
+   ↑
+[Backend Response]
+   ↑
+[API Gateway adds headers]
+   ↑
+[Load Balancer]
+   ↑
+Browser (receives JSON/HTML)
+
+---------so what you are saying is that load balancer is managing traffic distribution between 3-4 different replicas of 
+the same instance in order to increase availability. -------------(Yes). 
+
+---------what if we have not implemented this horizntal scaling and have only single instance but a microservice
+ arcitecture but with a single instance on multiple nodes but no replicas. Then how will be the flow ? ----------
+Browser
+   ↓
+[DNS resolves shop.com]
+   ↓
+[Load Balancer]
+   ↓
+[API Gateway]
+   ↓
+[order-service (only 1 instance)]
+   ↓
+[product-service (only 1 instance)]
+   ↓
+[Database]
+   ↑
+[Back through same path]
+
+-----------And is load balancer required in this situation ? ------------
+ Yes, a Load Balancer is still useful, but not mandatory in all cases. Having Gateway servcie as nodeport can solve 
+   the requirement. And to increase the availability, we can also have multiple replicas of gateway pod and k8s can 
+   internally handle routing to any one healty pod and follwo round-robin. 
+
+----------Only API Gateway and no load Balancer can solve your traffic routing at every extent and can complete the flow 
+fully. But this has some disadvantages listed below: -------------
+-----Concern----			------Applies?-----	-------Explanation-----
+Manual DNS/IP Mapping		✅		You manually manage DNS to point to master node's IP
+Single Point of Failure			✅		If master node fails, the NodePort becomes unreachable
+Security of Master Exposure		✅		Master node is publicly exposed (even if just one port)
+Limited TLS Automation		✅		You need to manually handle certificates, unlike with Ingress+LB
+
+------------ And the flow will be like: -------------
+Browser
+ ↓
+API Gateway (exposed directly via NodePort/IP)
+ ↓
+order-service
+ ↓
+product-service
+ ↓
+Database
+ ↑
+Back to browser
+
+	
+----------  In my microservcie architecure, i have 20 different microservcies deployed as k8s pods. I have only 1 replica 
+of whole stack of 20 microservices, which is further distributed on multiple nodes. now, in this setup I infer that I do 
+not need load balancer and api gateway can single handedly solve the issue of routing request to different micro-
+services. am i right ?  ------------
+	Yes, Since we have only one instance of each service, there is no need for load balancing traffic across replicas.
+	Your API Gateway can:
+		Authenticate requests
+		Route requests to the correct microservice (based on path or headers)
+		Apply policies like rate limiting, logging, etc
+	So yes — the API Gateway can single-handedly manage internal routing between microservices.
+
+
+------------------- Now, keep in mind my current setup of no load balacer and api gateway beng nodeport sercie. 
+Can there be a design such that i can have multiple gateways deployed on the cluster such as kong, istio, etc 
+and distribute the traffic to only that gateway which is up and running at that particular time. which can be 
+done via some system say load balancer ? is this the standard use case of load balancing? ----------------
+	Yes, this can be done via load balancer but only if gateway servcies are of type load balacer adn not NOdePort. 
+	Cause 1 nodeport can be used by only 1 servcie at a time. and u will have to manually change the ports. 
+
+---------------- Also, explain how would this setup work if i have gateway service running on port lets say 32001 
+and applicaitons are configured to listen on that port only. in this case, i think i cannot use multiple gateways 
+becasue they will hve diffferent port assigned to itself which my application will not able to understand. ------------------
+	Yes, this can not be done if gateway servcies are of type NodePort. Cause 1 nodeport can be used by 
+	only 1 servcie at a time. and u will have to manually change the ports.
+	BUT this CAN BE DONE if gateway servcie is of type Load balancer, then no problem of 1 nodeport to be
+	used by multiple services. 
+
+
+
+
+--------------------------------------------
+
+ - L7 is more useful than L4 as this offers extra advantages such as ssl termination, http header based routing, authentication, cookies manipulation 
+and many more. Whereas L4 offers only the routing based on hostname, ip, port, protocol (http, https, grpc etc)
+- Ingress controllers and API Gateway both are L7 load balancers. 
+- Ingress controllers are load balancers only. as they help in traffic routing based on headrs, protocols, path, cookies etc. Whereas API gateway is 
+more than a load balancer as along with routing, it offers other functinalitiies such as: ssl termination, rate limiting, auhtnetication, req/res 
+transformation etc. 
+- 
+
+TLS Termination is done by default in API Gateway. We just need to conifugre certificate which wil be used to authenticate client first. 
+for authentication, plugin named jwt auth can be used. In this case, every reequest wil be validated first absed on the auth token provided by clientt servcie and then server will vaidate that and allow the request to pass. (This happens on which layer of OSI Model)
+For rate-limiting, kong provides plugin mamed "rate-limiting" whch can be used to limit the no of requests to a particular api or service.
+
+
+
+
+
+
+
+
+
