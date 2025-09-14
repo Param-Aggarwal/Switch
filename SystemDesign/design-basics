@@ -18,11 +18,11 @@ Eg: Rabbit MQ, Zero MQ(library to write message queue), Java Message system, etc
 
 Monolithic vs Microservice Architecture —> 
 Microservice Architecture —> Separate services with a singular business use-case and serves only that. Basically, a use case is defined and then a separate service is used to serve that purpose
-Adv —> Scalable, better fine grained control over different apps(if one app has more usage, then only this can be scaled up), parallel dev is easy, good for large teams, Less context needed to develop Dis —> Need skilled architects to design, More Latency(as increased network calls), Difficult to manage, 
+Adv —> Scalable, better fine grained control over different apps(if one app has more usage, then only this can be scaled up), parallel dev is easy, good for large teams, Less context needed to developDis —> Need skilled architects to design, More Latency(as increased network calls), Difficult to manage, 
 Eg:  used by Google, fb etc. 
 
 Monolithic Architecture —> Single/Multiple machine running the computation, 
-Adv —> good for small teams, less complex, less duplication (as same code has to be written for multiple microservcies), low latency(as no network call, only inside function calls),  Dis —> all of the code needs to be correct and deployable, No Decoupling, Single Point of failure, Huge Server Reload Eg: used by stack overflow
+Adv —> good for small teams, less complex, less duplication (as same code has to be written for multiple microservcies), low latency(as no network call, only inside function calls), Dis —> all of the code needs to be correct and deployable, No Decoupling, Single Point of failure, Huge Server ReloadEg: used by stack overflow
 
 
 Horizontal Partitioning —> Sharding, Indexing, 
@@ -56,7 +56,7 @@ Basically, making a network to serve the content and handle the delivery of thos
 Event Driven Architecture —> 
 Instead of request/response model (which has its dis), we focus on Publisher Subscriber model. In this, we async trigger the event and do not wait for second service to complete instantly. Instead we return instantly and in future, whenever the first service gets response from second service indicating the completion, then the flow of that is triggered further. So, here instead of waiting for response from a service, we move on and whenever we receive acknowledgment, we async start the another process and flow continues. 
 Here, instead of request response type of interactions between services, the focus is on events. This means that services publish info about  events and subscriber services take respective actions according to their requirement on receiving those events. This is called Publisher subscriber Model. 
-Adv —> This basically follows eventual consistency. It reduces failures at multiple points, also reduces latency Dis —> But cannot be used in mission critical situations like transactional systems which require consistency and availability. Also duplicity of idempotent requests. 
+Adv —> This basically follows eventual consistency. It reduces failures at multiple points, also reduces latencyDis —> But cannot be used in mission critical situations like transactional systems which require consistency and availability. Also duplicity of idempotent requests. 
 Eg: —> Twitter uses this. 1st person posts something. Event is generated. Subscriber services (Other persons and their feeds) consumes the event and do the respective action. 
 Git uses events(commits), reacts node.js, Gaming Servers etc. 
 Jio also uses this. GPE service is basically handling events and using “Camunda Workflows” to implement that. 
@@ -86,8 +86,8 @@ And this done —>
 
 For eg: —> In case if 1 is down and 5 does not have the data, or user makes GET request even before data reaches 5, then this architecture may fail. So, to avoid this, concept of Quorum is used where another node(master node generally) basically makes consensus of data from all the backups and returns accordingly. (Generally, 3 nodes make 1 quorum) 
 It votes all the nodes(main nodes and all backups) and then makes consensus out of majority and then responds accordingly. This ensures availability and eventual consistency. 
-If this also fails(which is rare), then in NoSQL db’s we are ready to accept these kind of inaccuracies. (As it is a rare condition where 1 node is down and even quorum cannot be made either).  
- 
+If this also fails(which is rare), then in NoSQL db’s we are ready to accept these kind of inaccuracies. (As it is a rare condition where 1 node is down and even quorum cannot be made either). 
+
 Geographical Servers 
 ABR —> Adaptive Bitrate Streaming —> dynamically updating the bitrate which we want to use for streaming
 Bitrate —> how may bits are used to store the chunk of data 
@@ -97,7 +97,7 @@ Bitrate —> how may bits are used to store the chunk of data
 
 
 ————— Doubts ——————
-What is CDN ? What is Kafka ??
+What is CDN ?What is Kafka ??
 DB ?? Different DBs ?  —> Cassandra, PostgreSQL, MongoDB, MySQL etc. 
 How can Data be stored ? —> SQL form vs NoSQL Form 
 What is Hash Function and its Implementation ??  —> method to basically categorise the inputs and distribute as uniformly as possible to the consumers. 
