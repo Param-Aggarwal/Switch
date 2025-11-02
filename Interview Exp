@@ -1,0 +1,82 @@
+Interview Exp
+
+
+
+A. Mercor
+
+Frontend: 
+- Exp in JPL and Tech stack 
+- How complex state management is handled
+- Diff between Redux and Zustand and where to use which library ? 
+- Their code and logic on how to write stores in each of them and how can we optimise state mutation ? 
+- Mutable and immutable states --> which to use in stores and why ? 
+- Counter code and how can I optimise that to increment and decrement the counter
+- Use fetch custom hook and how can I optimise that? 
+- How SSR works and where do we use it ? What problems faced in implementing ? 
+System Design: 
+- Design a service which gives JS snippet which gathers user events(like user clicks, page routers, scrolls, time spent etc) and give analytics and generate reports and host that on endpoints. 
+- How to ensure reliability, de-duplication of events, message queues etc. 
+- Implement security (API authorisation), observability, reduce latency (1 million requests per second)
+- DB preference and why ? (For storing events data) 
+
+
+B. Payment Company
+- How to do heavy api call in react use state hook 
+- 
+
+
+C. TripJack
+- Features of HTML5
+- Elements of html5 lime strong, video, etc 
+- 
+- Accessibility in CSS
+- CSS animations
+- How will u make responsive web design: a. Media query, b. ? 
+- Position property: Types —>  relative or absolute 
+- 
+- Diff between cookies, session and local storage 
+- Diff between var let const
+- What is closure
+- Callback function
+- Callback Hell and Promises 
+- What is Event loop  and how does asynchronous tasks happen in js
+- What is prototype, polyfills 
+- Output based question —> 
+let x = 10;
+let y = x++;
+console.log(x) 
+console.log(y)
+
+var a=1;
+var b=2;
+console.log(a + "-" + b)
+
+function foo(a){
+    console.log(a);
+}
+function foo(a,b){
+    console.log(a+b)
+}
+foo(10);
+foo(10,20);
+
+function foo(a){
+    return function(){
+        console.log(a++)
+    }
+}
+const b = foo(10)
+const c = foo(18)
+b()
+b()
+c()
+
+- Ways to pass data between different components
+- Why use context, redux, redux toolkit, etc and in what situations
+- Lifecycle of React Component
+- React coding question: Make a React component that:
+    * ✅ Fetches random users from api= "https://randomuser.me/api?results=20”
+    * ✅ Displays them in a tabular format
+    * ✅ Includes a search bar to filter users by name or city
+
+D. 
