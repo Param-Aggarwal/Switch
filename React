@@ -273,8 +273,8 @@ Transition Hooks —>
         * Dependent drop-downs —> Prevent UI freezing when one state triggers heavy work
 
 - 🧠 Final Difference Recap:
-    * useTransition → Runs the expensive update in the background with low priority → If a new high-priority update comes (e.g., user types again), → The previous low-priority update may be abandoned, and the new one starts
-    * useDeferredValue → Delays the propagation of the input (query) to the expensive function → If input changes quickly again, it may skip earlier values → Only latest deferred value is eventually used → The expensive function is never called for intermediate values
+    * useTransition→ Runs the expensive update in the background with low priority→ If a new high-priority update comes (e.g., user types again),→ The previous low-priority update may be abandoned, and the new one starts
+    * useDeferredValue→ Delays the propagation of the input (query) to the expensive function→ If input changes quickly again, it may skip earlier values→ Only latest deferred value is eventually used→ The expensive function is never called for intermediate values
 * 
 Extra hooks —> 
 - useId —> Think of useId() as a layout helper, not a data identifier.

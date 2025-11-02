@@ -23,14 +23,14 @@ JS Runtime Environment(JRE) —> JS Engine(call stack+Memory heap) + Event Loop 
 Execution Context contains 
 	- Memory(var environment) + code(thread of execution)
 	- Thread of Execution —> where code is run 
-Every time a code is run in js, an execution context is created for that environment.  Every function has its own execution context created at the time of initialisation of function and this gets deleted after the completion of the function.  	- Stage 1: memory Allocation phase
+Every time a code is run in js, an execution context is created for that environment. Every function has its own execution context created at the time of initialisation of function and this gets deleted after the completion of the function. 	- Stage 1: memory Allocation phase
 	- Stage 2: Code execution phase
 JS Engine gives us different functions in the global context that can be accessible at any point in the code.
-Whenever JS script is run inside the chrome, following things happen before executing the first line:  Global space is created + global context is set + window function for chrome + this function for chrome + memory allocation is done for all the variables n functions of the script. 
+Whenever JS script is run inside the chrome, following things happen before executing the first line: Global space is created + global context is set + window function for chrome + this function for chrome + memory allocation is done for all the variables n functions of the script. 
 Call Stack is stack to maintain the ORDER OF EXECUTION of all the execution contexts. 
 
 Hoisting is effectively similar to function definition moving on the top of the code before code execution. But not for the variables. In reality, memory allocation is done even before the code execution and it is done in such a manner that variables, arrow functions are assigned undefined value and functions are assigned its value. Thus, defines the hoisting. This means you can use variables and functions before you actually declare them in the code.
-Hoisting is only for Traditional FUNCTIONS  + VARIABLES + (LET + CONST) —> in special case only (and not ARROW Functions ) Hoisting is also possible for LET and CONST but they stay in temporal dead zone for the time being when they are not initialised. So, in normal hoisting, variables and functions are declared in global context and assigned special value “undefined” till the time they are initialised. But in case of let and const, they are hoisted in temporal dead zone instead of global context. They never go in global context even after initialisation. They have different scope altogether. Also, Things in temporal dead zone cannot be accessed. Temporal dead zone is for the time when the  let and const are defined but are not accessible. Gives Reference Error
+Hoisting is only for Traditional FUNCTIONS  + VARIABLES + (LET + CONST) —> in special case only (and not ARROW Functions )Hoisting is also possible for LET and CONST but they stay in temporal dead zone for the time being when they are not initialised. So, in normal hoisting, variables and functions are declared in global context and assigned special value “undefined” till the time they are initialised. But in case of let and const, they are hoisted in temporal dead zone instead of global context. They never go in global context even after initialisation. They have different scope altogether. Also, Things in temporal dead zone cannot be accessed. Temporal dead zone is for the time when the  let and const are defined but are not accessible. Gives Reference Error
 Application of hoisting: We can call the function even before declaring it in the code. 
 
 Hoisting for var —> yes (in global context) + initialised to undefined 
@@ -81,7 +81,7 @@ Applications of closures are listed below:
 	- Iterators etc. 
 Disadvantages of closures:
 	- two much memory utilisation as variables are not garbage collected
-Closure Trap —>  function run() {
+Closure Trap —> function run() {
   var count = 1;
 
   for (var i = 1; i <= 5; i++) {
@@ -92,14 +92,14 @@ Closure Trap —>  function run() {
   }
 }
 
-run(); SOLUTION is using let instead of var. or using IIFE  for (var i = 1; i <= 5; i++) {
+run();SOLUTION is using let instead of var. or using IIFE for (var i = 1; i <= 5; i++) {
   (function (iCopy) {
     setTimeout(function () {
       console.log(iCopy);
     }, iCopy * 1000);
   })(i);
 }
-  
+
 
 
 
@@ -199,7 +199,7 @@ AWAIT can only be used inside an asynchronous function. All other places give Sy
 
 
 Classes concept in JS
-WeakMap, Map, Obj, Set,  Proxy, Generator, Symbol, Reflect —> 
+WeakMap, Map, Obj, Set, Proxy, Generator, Symbol, Reflect —> 
 Map - allows any thing as a key be it primitive type or object. it is not garbage collected and can be used in .keys and .forEach functions. 
 Weak Map --> only allows object as keys and is garbage collected when not in use. 
 Generator function --> called with fucntion* (){}, it helps us control the execution of function explicitly by user. We decide when to move to the next line in the fn. 
@@ -278,7 +278,7 @@ Event Bubbling —> Whenever child element is clicked in the DOM, its parent ele
 Event Capturing —> Event capturing is opposite flow of Event Bubbling. Functionality is same that in case of event happening in child div, its parent ad then 
 					grandparent will be called. But this time, the execution flow will be something like: grandparent —> parent —> child. This is what we 
 					say Event trickling or Event Capturing. Can be enabled by setting third argument(which is useCapture) in event listeners to true. By 
-					default, it is set to false.  Default flow —> Event capturing is always executed first and the event bubbling happens and this flow executes 
+					default, it is set to false. Default flow —> Event capturing is always executed first and the event bubbling happens and this flow executes 
 					in every scenario. It’s just that we can say js to print which ever flow we want by using the third argument(useCapture) of event 
 					listener method. 
 This Event Propagation is an Expensive task. This can be stopped via e.stopPropagation(). 
@@ -334,7 +334,7 @@ Note:
 - 
 
 
- Extra questions:
+Extra questions:
 1. console.log(+true)
 2. 
 

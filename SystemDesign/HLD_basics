@@ -14,7 +14,7 @@ Basics of High Level System Design:
 - MONITORING(Metrics + Traces) AND LOGGING can be introduced in the systems so as to increase the efficiency of the system. And adding more visualibility to the system with auto alert generation in case of any outage. 
 - MICRO-SERVICES ARCHITECTURE can be used to efficeintly manage the code base and also reduces redundancy. Here, each service has a separate business use case and functionality. 
 - MESSAGING QUEUE can be used for communication n microservcies architecture so as to reduce latency.  Message queue works in a manner that Consumer pushes the info and Producer consumes that info in asynchronous manner. 
-  
+
 Concurrency is about dealing with lot of things at once but Parallelism means doing multiple things at once. 
 In Concurrency, context is switched so fast between different tasks that it appears that they are running parallel but actually they are not. As Single core Systems cannot do multiple tasks at once. Hence, Parallelism can not be done in single core systems. 
 Redis —> Remote Dictionary Server —> Can be used as Cache, Message Broker, Db
@@ -23,11 +23,11 @@ Redis —> Remote Dictionary Server —> Can be used as Cache, Message Broker, D
 
 Monolithic vs Microservice Architecture —> 
 Microservice Architecture —> Separate services with a singular business use-case and serves only that. Basically, a use case is defined and then a separate service is used to serve that purpose
-Adv —> Scalable, better fine grained control over different apps(if one app has more usage, then only this can be scaled up), parallel dev is easy, good for large teams, Less context needed to develop Dis —> Need skilled architects to design, More Latency(as increased network calls), Difficult to manage, 
+Adv —> Scalable, better fine grained control over different apps(if one app has more usage, then only this can be scaled up), parallel dev is easy, good for large teams, Less context needed to developDis —> Need skilled architects to design, More Latency(as increased network calls), Difficult to manage, 
 Eg:  used by Google, fb etc. 
 
 Monolithic Architecture —> Single/Multiple machine running the computation, 
-Adv —> good for small teams, less complex, less duplication (as same code has to be written for multiple microservcies), low latency(as no network call, only inside function calls),  Dis —> all of the code needs to be correct and deployable, No Decoupling, Single Point of failure, Huge Server Reload Eg: used by stack overflow
+Adv —> good for small teams, less complex, less duplication (as same code has to be written for multiple microservcies), low latency(as no network call, only inside function calls), Dis —> all of the code needs to be correct and deployable, No Decoupling, Single Point of failure, Huge Server ReloadEg: used by stack overflow
 
 
 How to Avoid Single Point of Failure —> Chaos Monkey Test (Netflix has this tool which takes down one node just to check resilience of distributed systems)
@@ -42,7 +42,7 @@ How to Avoid Single Point of Failure —> Chaos Monkey Test (Netflix has this to
 Event Driven Architecture —> 
 Instead of request/response model (which has its dis), we focus on Publisher Subscriber model. In this, we async trigger the event and do not wait for second service to complete instantly. Instead we return instantly and in future, whenever the first service gets response from second service indicating the completion, then the flow of that is triggered further. So, here instead of waiting for response from a service, we move on and whenever we receive acknowledgment, we async start the another process and flow continues. 
 Here, instead of request response type of interactions between services, the focus is on events. This means that services publish info about  events and subscriber services take respective actions according to their requirement on receiving those events. This is called Publisher subscriber Model. 
-Adv —> This basically follows eventual consistency. It reduces failures at multiple points, also reduces latency Dis —> But cannot be used in mission critical situations like transactional systems which require consistency and availability. Also duplicity of idempotent requests. 
+Adv —> This basically follows eventual consistency. It reduces failures at multiple points, also reduces latencyDis —> But cannot be used in mission critical situations like transactional systems which require consistency and availability. Also duplicity of idempotent requests. 
 Eg: —> Twitter uses this. 1st person posts something. Event is generated. Subscriber services (Other persons and their feeds) consumes the event and do the respective action. 
 Git uses events(commits), reacts node.js, Gaming Servers etc. 
 Jio also uses this. GPE service is basically handling events and using “Camunda Workflows” to implement that. 
@@ -244,7 +244,7 @@ Things to consider —>
 
 REST vs GRAPHQL vs SOAP —> 
 
-   API GATEWAY  —>
+API GATEWAY  —>
 Handles
 - Authentication
 - Routing
@@ -258,7 +258,7 @@ Handles
 Different Types of Load Balancers —> ELB, Gateway 
 DB ?? Different DBs ?  —> Cassandra, PostgreSQL, MongoDB, MySQL etc. 
 What is CDN ?
-Messaging Queue !!! —>  Example Rabbit MQ What is Kafka ??
+Messaging Queue !!! —>  Example Rabbit MQWhat is Kafka ??
 What is HeartBeat ?? Eg: Zookeeper
 
 Difference b/w Proxy and Reverse Proxy —> 
