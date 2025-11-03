@@ -1,0 +1,26 @@
+React topic
+
+
+✅ Your Understanding	          💡 Clarification / Confirmation
+Context API is great for small to medium data-sharing cases	                                          ✅ Correct — things like theme, language, auth state, or feature flags
+For complex or deeply nested state (e.g., cart, analytics, dashboard data)→ Context becomes messy	    ✅ True — leads to prop-drilling or over-re-renders
+  Re-renders in small trees can be optimized via React.memo / useMemo / useCallback	                  ✅ Yes — acceptable in low-scale apps
+But for large apps, you need selectors and middleware for efficiency	                                ✅ Correct — Redux/Zustand use selectors so only the consuming components re-render
+Context has no persistence (state lost on refresh)	                                                  ✅ Correct — must manually sync to storage
+Libraries like Redux / Zustand solve this + add async handling, logging, and devtools	                ✅ Exactly right
+Practical rule: Use Context for small, global UI-level data. 
+Use state management library for app-level domain data.	                                              ✅ Spot-on best practice
+
+
+
+
+
+
+context api is good and helps in sharding the data between multiple components but only in cases where we have samll no of components. or data flow is simple 
+i.e parent too child to gradparent and not too complex. in small cases, re-rendering can be handled easily by either using React.memo or useMemo or useCallback
+and even after this, if rendering is happening, this is acceptable as not much no of components are being re-rendered. But if my applicaitn has 10's-20s of compoents, 
+and have very complex logic of data sharing, then using context becomes repititive and reduces efficency. Also, it accompanies other problems like data not 
+stored permanently(if we rfresh the page, data is lost i.e. no persistence). whereas if we use state management libraries which can efficently pass data between
+the whole react app, we also get adiitinal features like data persistence, selector based rendering of components, async flow is also handled easily etc. so, 
+for complex data sharing, it is preferred to use state mngmt libraries. but for smaller use cases like: session storage maintenance, theme of site, language 
+selected by user, context can be used, but some complex data like cart updation, user details, dashoards etc can be shared thoru all app via State mngmt libraries.
