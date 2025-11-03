@@ -1,16 +1,15 @@
-React Todo --> 
-    1. Table 
-    2. Form
-    3. Hooks
-    4. Debouncing, Throttling
-    5. Fetch api calls, 
-    6. Tailwind
-    7. Lifecycle of hook
+React 
+
+
 
 React is library to manage SPA. 
 One Way data binding. 
 
-# React Rendering —> 
+In Strict Mode, React will call some of your functions twice instead of once. Only component, initializer, and updater functions need to be pure. Event handlers don’t need to be pure, so React will never call your event handlers twice.
+
+
+
+React Rendering —> 
 - React makes copy of real DOM called VIRTUAL DOM, makes changes to that first as it is less expensive and fast, identifies difference with respect to Real DOM, and then applies only the reqd changes to REAL DOM. 
 - By default, Reacts performs Client Side Rendering only. SSR can also be implemented fro particular case but not as easy as other library like Next.js. (in backend code, call for app component has to be made, then on frontend, that rendered server side component has to be hydrated with js on frontend)
 - In React, functions and variables declared inside a component body are re-created on every render. This includes:
@@ -18,18 +17,18 @@ One Way data binding.
     * Objects (const obj = {})
 - This is why hooks like useCallback and useMemo exist: to preserve reference identity between renders when needed.
 
-## Client Side Rendering —> 
+Client Side Rendering —> 
 - All the bundled code(in form of HTML, CSS, JS files) is sent to client, and rendering of the web components happen in the client side only. Painting of the Dom happens at the client side only. 
 - Processing for creation of Html elements from js happens at the client side, whenever the call is made for the website. 
 
-## Server Side Rendering —>  
+Server Side Rendering —>  
 - The bundled code (HTML, CSS) is processed on the server side beforehand and stored in cache/DNS and is sent to the client as is. This reduces initial loading time on the client and increases UX. 
 - Here, React app is also sent to the client(in form of HTML, CSS, JS) in the background. 
 - And after the initial rendering of the pre-loaded HTML/CSS, whole react component renders again in the client, and JS is hydrated to the elements in runtime. 
 - This re-rendering does not change any pre-loaded HTML elements(because the code is same before and after). Thus, the JS part is attached to the elements at the runtime so smoothly, that the client does not feel any change in UI. And hence does not degrade UX. 
 - Note: Whole React APP is rendered again on the client but it feels like that only JS is attached at the client side because the initial loaded HTML, CSS is same afterwards also. 
 
-## Hydration Failure —> 
+Hydration Failure —> 
 - Sometimes, there occurs a difference between pre-loaded HTML, CSS components and re-rendered HTML, CSS, JS components. 
 - This may occur due to some change in HTML while attaching JS. This may result in error in the UI. This is called Hydration Failure. 
 
@@ -38,7 +37,7 @@ Static Site Generation —>
 - And the static site is served to the client with pre-loaded JS. All the functionality works fine. And no re-rendering of the website takes place in the background. 
 - This increase the performance significantly as server/client does not need to render every page dynamically for every request. 
 
-## Incremental Site Generation —> 
+Incremental Site Generation —> 
 -  Whenever any new data is added, then that data is added to the static site in the incremental fashion so as to not loose the advantage of SSG. 
 - Incremental static site generation, aka incremental static regeneration (ISR), is a pattern added to static site generation that allows updating of existing pages and adding new ones, by pre-rendering a subset of pages in the background even while receiving new requests for pages.
 - Flow is something like: 
@@ -49,124 +48,62 @@ Static Site Generation —>
     * Cache Update: Once the page is successfully regenerated, the cache is updated with the new version. 
     * Subsequent Requests: Subsequent requests to that page will then serve the updated, cached version, ensuring that users see the latest content. 
     * On-Demand Revalidation: If you need to update content immediately, you can use on-demand revalidation to trigger a page regeneration outside the scheduled revalidation time. 
-## Hot Module Reloading —>
+Hot Module Reloading —>
 - Fdvgv
 
 
-# URL based Routing —> 
 
-# Components —> 
+
+URL based Routing —> 
+
+Components —> 
+- Lifecycle of Component —> Mounting, Updating, Unmounting  
 Controlled Components —> 
-    - We change components based on the change in state which is controlling that component
+- We change components based on the change in state which is controlling that component
 Pure and Impure Components —> 
 Strict Component —> 
-    - wrapped around App Component to help us be safer and prevent errors. 
+- wrapped around App Component to help us be safer and prevent errors. 
 Portal Component —> 
-    - used when Particular component is to be loaded at specific place under specific component every time. 
+- used when Particular component is to be loaded at specific place under specific component every time. 
 Suspense component—> 
-    - used as fallback when data takes time to load. 
-
-# Intro --> 
-React -->  is the library only for defining React Components, React Elements and Component instances. Also, provides the diffing algo.
-React Element -->  JS Object with properties such as: keys, props, type, <component-name>  etc. 
-Reconciliation --> 
-    - Generating of React element Tree in form of plain js objects. DOM Tree is basically a js object with multiple nested component objects. 
-Virtual DOM vs Real DOM
-React Renderer --> 
-    - Generates DOM Tree from these elements and components and not React itself. React can be rendered differently for web, mobile etc. 
-    - So, react is not web specific or mobile specific. It is generic and Renderer differenties its implementaiton on different environments. 
-    - We can slso create our own React Renderer for custom implmenetation of React. 
-    - The default renderer used by React for web applications is --> *** React DOM Renderer ***
-    - Other renderer examples are as follows: 
-            ---Renderer---  	---Platform---- 	----Package----
-            React DOM	        Web Browsers	    react-dom
-            React Native	    iOS / Android	    react-native
-            React Three Fiber	WebGL / 3D	        @react-three/fiber
-            Ink	                Terminal (CLI)	    ink
-            React PDF	        PDF Documents	    @react-pdf/renderer
-Babel --> 
-    - compiler used by React to convert JSX to JS internally. 
-    - <h1>Hello</h1> is converted to React.createElement("h1") and so on.... 
-Webpack -->  
-    - powerful JavaScript module bundler. 
-    - In a React project, it takes all your .js, .jsx, .css, .svg, etc., files and bundles them into a few optimized files that a browser can understand. 
-        --🔧 Feature ---                ------💡 Purpose ------
-        Code Bundling	            Combines many files into one or a few (e.g., main.js)
-        Code Splitting	            Splits code into smaller chunks (for lazy loading)
-        Tree Shaking    	        Removes unused code from bundles
-        Hot Module Replacement  	Updates components in the browser without full reload
-        Asset Management	        Handles CSS, images, fonts, etc.
-        Transpilation	            Works with Babel to convert JSX and ES6+ to browser-friendly JS
-Speedy Web Compiler --> 
-    - SWC plays the role of Babel and Vite handles bundling like Webpack, but together they're much faster and simpler to use.
+- used as fallback when data takes time to load. 
 
 
 JSX —> JS with XML , dynamic rendering possible with JSX opposite to HTML Static rendering. 
 Props —> 
-    - Used to pass properties onto child component. Has uni-directional flow.  
+    - Used to pass properties onto child component. 
     - It is an Object. 
     - Can pass anything inside props, be it variables, functions, components(child components) etc. 
-    - Has problem of Prop Drilling.
-    - Props are immutable in the child component. (read only)
-    - If you have to change spmething, then it can be changes only by calling funntion which is passed to it as prop. 
-    - *** Default props *** values can be decalred. Component.defautProps = {age: 10, name: "XXXX"}
-    - Using *** prop-types *** package so as to avoid type errors. component.propTypes={name: PropTypes.string.isRequired, age: Proptypes.number}. These Values can be --> array, bool, func, object, element, etc.
+    - Has problem of Prop Drilling.  
 State —> to manage data 
-Keys --> 
-    - Index should not be used as a key because diffing also see the changes based on keys and when index changes, keys changes and hence updates the whole component altogether which is very inefiicient. 
-Lifecycle of React Hooks/Components --> 
-    1. Mounting Phase (Component is created and added to the DOM) --> runs just after mounting of the component
-        Function based components --> useEffect(){} 
-        Class based components --> ComponentDidMount(){}
-    2. Updating Phase (Component updates due to state or props change) --> runs when updating the component
-        Function based components --> useEffect(){  , [count]} // runs when count changes
-        Class based components --> ComponentDidUpdate(prevProps,prevState){}
-    3. Unmounting Phase (Component is removed from the DOM) --> runs just before unmounting of the component
-                Function based components --> useEffect(){() => {
-                    return () => {}
-                }, [] } 
-        Class based components --> ComponentWillUnmount(){} //cleanup like removing event listeners
 
 
-# React Fiber 
-    - plain old js with some objects and properties 
-    - Async ~~library~~ which focuses on animations and responsiveness 
-    - It is a new reconciler came in React v15. Old Reconciler was Stack(sync, implmeemntaiton: stack). 
-    - Fiber is generated fom React Element itself. 
-    - Fiber Properties -> tag(defines 1-1 relationship with element), child, sibling, return, alternate etc. 
-    - Fiber Tree is created from React Elements and then is executed smartly which increases performance
-    - Smartly means Fiber breaks work into smaller chunks and schedules them according to their priority. fiber can do this becasue of time Slicing ability in Fiber which React did not have. 
-    - Works in 2 phases: 
-        - Render Phase --> 
-            - Determines which nodes to be inserted, updated, deleted + which components needs lifecylce methods called. 
-            - All of this info is stored in EFFECT List   
-            - beginWork() --> going down the tree , completeWork() --> moving up the tree
-        - Commit Phase --> 
-            - All the changes done to copy tree and then reference of actual tree is swapped with copy tree to relect changes in UI.  
-            - commitWork() 
-    - Usages / Applications: 
-        - Error Boundaries
-        - Suspense and concurrent Mode
-    
-
-
-# Hooks —> 
+Hooks —> 
 - Hooks are functions which allows us to hook and manage states. 
+- Hooks use the concept of closure to persist the state data across re-renders. 
 - Lets us add state and other features to our functional components without using class based components. 
 - GPT Link for Hooks: https://chatgpt.com/c/683c5e61-ccdc-8001-b424-70e94cc4955b (In Depth analysis)
 - Link for below video: https://www.youtube.com/watch?v=LOH1l-MP_9k (Summarising all the hooks with their functionalities)
-- ￼
+- 
 
-State Hooks —> 
+State Hooks —> hooks like useState rely on closures + React’s internal hook array to preserve and reconnect state values between renders — that’s the essence of “stateful functional components”.
 - useState —> to manage simple state management
+* If you pass a function to useState, React will only call it during initialization.  Eg:   const [todos, setTodos] = useState(createInitialTodos()); T he above line calls createInitialTodos function on every render. But it is not required as this required only on the initial render. So, instead of above, we can call:           const [todos, setTodos] = useState(createInitialTodos); This ensures that the fn is called only during the initial render and not again. 
+* Ceveats — >
+    * React may call your initializers,updaters twice in development to verify that they are pure. 
+    * INITIALISER, UPDATER AND COMPONENTS must be pure functions. 
+    * Compares the state with Object.is comparison. 
+    * BATCHES STATE UPDATES (It updates the screen after all the event handlers have run and have called their set functions). In we want to update state earlier, we can use flushSync() function and pass the setState function inside that. It causes state update synchronously bypassing the above behaviour. 
+    * Adding state in useEffect Dependencies does not cause Re-render. 
+    * When you update nested state, you need to create a copy of the object you’re updating, as well as any objects “containing” it on the way upwards
+    * 
 - useReducer —> to handle complex or multiple dependent states with a single reducer function.
     * Helpful as it makes changes to all the related states in a single hook. 
     * Takes input —>  useReducer hook takes 2 inputs: Reducer function and initial states object
     * Outputs —> state object + dispatch function which changes the state based on actions. This function (dispatch) is called whenever this hook is triggered. 
 
 Effect Hooks —> 
-Used for dealing with external systems or doing things cannot be done by any other hook. * React schedules effects after painting to the screen**, not during render.
-
+Used for dealing with external systems or doing things cannot be done by any other hook
 - useEffect —> 
     * Is asynchronous in nature
     * used to perform side effects 
@@ -179,14 +116,13 @@ Used for dealing with external systems or doing things cannot be done by any oth
     * For eg: if isPlaying == true, then instruct the video element to play, otherwise stop. 
 - useLayoutEffect —> 
     * stricter version of use Effect. 
-    * Runs before rendering the page for the first time. -->  After DOM mutations but before paint
+    * Runs before rendering the page for the first time. 
     * Is synchronous. Helpful in getting details from browser at runtime and then using them to load data. 
     * Use Case: find out client layout measurement and setting them in state even before rendering. 
 - useInsertionEffect —> 
-    * Runs before the above two. Even before rendering the ui. 
-    * Is synchronous. 
-    * To add styles to a particular js elements. 
-
+    * Runs before the above two. Even before rendering the ui. I
+    * s synchronous. To add styles to a particular js elements. 
+    - 
 
 Context Hooks —> 
 - useContext —> Instead of prop Drilling, we use this hook to provide global context to our parent component and then can use it anywhere inside the child component even if it is 3-4-5 levels deep. 
@@ -196,14 +132,13 @@ Context Hooks —>
         * Pass value of context inside ContextProvider component as props. 
         * Use that value in child component with useContext Hook and the above made context variable as input. 
     * Directory Structure can be —> 
-        * ￼
+        * 
     * All components using useContext re-render when context value changes
     * Ca be used in combination with useState or useReducer hook. 
     * Use Case —> helps in enabling features like: (Basically global setting that do not change much)
         * Theme Switching
         * Authentication Context
         * Language Settings etc. 
-
 
 Ref hooks —> 
 - useRef —> 
@@ -273,8 +208,8 @@ Transition Hooks —>
         * Dependent drop-downs —> Prevent UI freezing when one state triggers heavy work
 
 - 🧠 Final Difference Recap:
-    * useTransition→ Runs the expensive update in the background with low priority→ If a new high-priority update comes (e.g., user types again),→ The previous low-priority update may be abandoned, and the new one starts
-    * useDeferredValue→ Delays the propagation of the input (query) to the expensive function→ If input changes quickly again, it may skip earlier values→ Only latest deferred value is eventually used→ The expensive function is never called for intermediate values
+    * useTransition → Runs the expensive update in the background with low priority → If a new high-priority update comes (e.g., user types again), → The previous low-priority update may be abandoned, and the new one starts
+    * useDeferredValue → Delays the propagation of the input (query) to the expensive function → If input changes quickly again, it may skip earlier values → Only latest deferred value is eventually used → The expensive function is never called for intermediate values
 * 
 Extra hooks —> 
 - useId —> Think of useId() as a layout helper, not a data identifier.
@@ -316,66 +251,89 @@ React 19 Hooks —>
 
 
 
-# React Query —> alias TanStack Query 
+
+React Concepts —> 
+Lazy initialisation:  
+- Lazy initialization via callback in useState done to prevent heavy computational calls at every render. 
+- For heavy computational functions, we call them in callback function rather than calling the function directly, This is because in callback fashion, only the reference is passed, not the whole function. So the function does not get called immediately. Instead only called once. 
+- If the initializer is a function, call it only during the first render (mount) to compute the initial state.
+- After that, React stores the returned value and never calls that initializer again, even if the component re-renders.
+- This is React-specific and specific to useState’s implementation.
+
+- Hooks use the concept of closure to persist the state data across re-renders. 
+
+Batching:
+- When React sees multiple changes to the state, then it batches those updates and optimises inherently to reduce the renders of the component and hence increase the performance. 
+- Batching is process of optimising the state updates in a single renders. 
+- Note: this is done by React 18+ only and not in lower versions. And React batches sync and async tasks both.
+Conside the example:  function Counter() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = () => {
+    setCount(count + 1);
+    setCount(count + 1);
+  };
+
+  console.log("Render:", count);
+  return <button onClick={handleClick}>Count: {count}</button>;
+} Here, set count will be called twice but render of the Counter component will be only once as react internally sees that same change is being done 2 times, so it optimises. 
+React Version	setCount called	Renders	Final count
+React 17	Twice	Twice	1
+React 18+	Twice	Once (batched)	1
+ setCount(c => c + 1);
+await fetch('/api/data');   // asynchronous boundary
+setCount(c => c + 1); 													—> dens not cause batching as async task executes between the state updates. 
+
+setTimeout(() => setCount(c => c + 1), 0);
+setTimeout(() => setCount(c => c + 2), 0);								—> Still breaks batching as both have different tasks in queue and hence treated different. If they were is a single promise or setTimeout, then batting would have worked. 
+
+Props: 
+- Can use props to pass data to components. 
+- Props can be used to design reusable UI components. (Via composition)
+- Instead of relying on inheritance, I create flexible child components that accept dynamic content (via children or props) — so the parent can decide what to render inside them. This follows React’s composition model, allowing the same component to adapt to multiple use cases.”
+- Eg: 
+function Child({ children }) {
+  return <div className="p-4 border rounded-lg">{children}</div>;
+}
+
+function Parent() {
+  return (
+    <Child>
+      <h2>Param Aggarwal</h2>
+      <p>Frontend Engineer</p>
+    </Child>
+  );
+}
+Here, Child is a reusable component which applies the same css and formatting to all the components with whatever is rendered inside it. 
+- By default ,React re-renders all children when parent re-renders. 
+- When Prop changes, all consumers of props re-renders. Even when static prop is passed onto children, if the parent re-renders, child will also re-render no matter the prop is changes or not !! 
+- This can be removed or reduced by using useMemo hook which shallow copies the value of props and if found same, then does not re-render the child component. Foor more info, Read Hooks —> useMemo
+
+Context: 
+- Pdf
+- Fvf
+
+Preventing of re-renders in contexts, props, states etc. by React.memo(), useMemo(), useCallback() given below: 
+Concept	Purpose	When to Use
+React.memo	Skip re-render if props same	Static child props
+useMemo	Cache heavy calculations	Derived/expensive values
+useCallback	Cache function references	Passing stable callbacks
+Context API	Share small global data	Small/medium apps
+Redux/Zustand	Manage app-wide state efficiently	Medium–large apps
+
+React Query —> alias TanStack Query 
 - A React library which handles fetching more efficiently
 - Handles caching and cache invalidation behind the scenes automatically. 
 - Handles refetching via “reFetchOnWindowFocus: true”
 - useInfiniteQuery() —>  for infinite scrolling data. 
 - Optimistic Updates 
-
-# Other Info —> 
+Other Info —> 
 Global State —> to avoid prop drilling to multiple levels, we can make a global state using Context API or Redux. 
 Key Prop —> every item in the list should have a unique identifier named key. So that React knows exactly which element is to be updated, removed or whatever. 
 Event Handling —> directly reference the function inline inside the curly braces with camelCase event name. Like onClick={handleClick}, onSubmit{handleSubmit}, onChange{handleChange} etc. 
 Conditional rendering —> using Tertary operator, && or || 
 Curly Braces —> We can add dynamic JS variables, functions etc in JSX but only inside curly braces. So, everything dynamic Js would go under curly braces. Like {variable}, {function}. 
 	Double curly braces vs Single curly braces !!?? 
-
-# React Router Dom
-
-    - location keyword in <Route> element
-    - Can use Multiple parallel <Routes> section with the same path inside a single parent component, say App and both child components (mentioned in <routes> element) will be rendered simultaneously. 
-    - useRoutes can also be used to define the routing logic instead of jsx (Routes,Route). But we still need to use BrowserRouter for wrapping the main app. it is just the replacement of routes and route elements. 
-    - <Outlet context={}>  component to render child components dynamically. 
-    - useOutletContext() to use the context passed from parent to child component in child component. 
-    - useParams() used for ? 
-    - <Link to="" replace state={} reloadDocument >Click me</Link>
-    - <NavLink /> is different from Link as it has an additional "active" property implicitly defined to identify the link on which user is currently on. Also, NavLink can also take different styling properties than link like: style, className, children along with properties possessed by Link tag. "end" keyword can also be used to end the active property when redirecting to child routes.  
-    - <Navigate> is also same as Link but redirects to another page. 
-    - UseNavigate("/") or useNAvigate(-1/-2) is a hook for the same purpose which can be used interactively in code logic when to navigate to another route. it takes 2 arguments, first is path where o route and second is properties like state and replace only and no other properties.  
-    - useSearchParams() works similar to useState but populates the URL with the value we want and can also be used in jsx like we use with useState. This is used for managing query parameters or setting the URL with parameters when fetching filtered list or searching, paginating etc. 
-    - useLocation hook used to store state info when ever that link is ci=liked and that info can be used like the state variable. it captures that info across re-renders. 
+flushSync(){ () => setState(c => c+1)} —> forces the component to render immediately after the update and not batch the updates. 
 
 
-# React Dev Tools --> 
-    - Can use Debugger mode in VS Code itself by using launch.json file in .vscode location. 
-    - use React Dev tools Extension in Browser 
-        Gives Components/Profiler Section
-    - Profiler Section gives 
-        why each component re-rendered ? 
-        what time did each component take to render ? 
-        what are the actual state changes
-        DOM Tree etc. 
-    - For Next.js applicaiton, can load file launch.json form next website. Gives 3 different debugging capabilities:
-        1. Client Sdie 
-        2. Server Side
-        3. Full Stack 
-
-
-
-
-Dispatch fn
-
-
-
-
-Keywords to mention in Resume: 
-searching/paginating
-libraries -->  react, react-dom, react-router-dom, easy-peasy, axios
-hooks list -> 
-    simple: useState, useEffect, useRef, useMemo, useCallback, useReducer, useContext
-    medium --> useContext, useId, custom Hooks for fetch, debounce, throttle etc. 
-    hard --> React Query, Store and Store provider from easy-peasy, zustand, react form, redux, react table/tanstack table
-Topics for Resume / Project Keywords --> SSR/CSR/Code Splitting, Accessibility (a11y), Responsive UI with Tailwind or Styled Components, Memoization & Performance Optimization, Form Validation & Error Handling, Error Boundaries in React, Optimistic UI updates, Multi-step forms with navigation
-
-To learn topics --> Authorisation, request/response interceptor, via axios, count no. of views on site, infinite scrolling, lazy loading, server side rendering 
