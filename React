@@ -57,7 +57,7 @@ Hot Module Reloading —>
 URL based Routing —> 
 
 Components —> 
-- Lifecycle of Component —> Mounting, Updating, Unmounting  
+- Lifecycle of Component —> Mounting, Updating, Unmounting 
 Controlled Components —> 
 - We change components based on the change in state which is controlling that component
 Pure and Impure Components —> 
@@ -88,7 +88,7 @@ Hooks —>
 
 State Hooks —> hooks like useState rely on closures + React’s internal hook array to preserve and reconnect state values between renders — that’s the essence of “stateful functional components”.
 - useState —> to manage simple state management
-* If you pass a function to useState, React will only call it during initialization.  Eg:   const [todos, setTodos] = useState(createInitialTodos()); T he above line calls createInitialTodos function on every render. But it is not required as this required only on the initial render. So, instead of above, we can call:           const [todos, setTodos] = useState(createInitialTodos); This ensures that the fn is called only during the initial render and not again. 
+* If you pass a function to useState, React will only call it during initialization. Eg:   const [todos, setTodos] = useState(createInitialTodos()); The above line calls createInitialTodos function on every render. But it is not required as this required only on the initial render. So, instead of above, we can call:          const [todos, setTodos] = useState(createInitialTodos);This ensures that the fn is called only during the initial render and not again. 
 * Ceveats — >
     * React may call your initializers,updaters twice in development to verify that they are pure. 
     * INITIALISER, UPDATER AND COMPONENTS must be pure functions. 
@@ -208,8 +208,8 @@ Transition Hooks —>
         * Dependent drop-downs —> Prevent UI freezing when one state triggers heavy work
 
 - 🧠 Final Difference Recap:
-    * useTransition → Runs the expensive update in the background with low priority → If a new high-priority update comes (e.g., user types again), → The previous low-priority update may be abandoned, and the new one starts
-    * useDeferredValue → Delays the propagation of the input (query) to the expensive function → If input changes quickly again, it may skip earlier values → Only latest deferred value is eventually used → The expensive function is never called for intermediate values
+    * useTransition→ Runs the expensive update in the background with low priority→ If a new high-priority update comes (e.g., user types again),→ The previous low-priority update may be abandoned, and the new one starts
+    * useDeferredValue→ Delays the propagation of the input (query) to the expensive function→ If input changes quickly again, it may skip earlier values→ Only latest deferred value is eventually used→ The expensive function is never called for intermediate values
 * 
 Extra hooks —> 
 - useId —> Think of useId() as a layout helper, not a data identifier.
@@ -266,23 +266,23 @@ Batching:
 - When React sees multiple changes to the state, then it batches those updates and optimises inherently to reduce the renders of the component and hence increase the performance. 
 - Batching is process of optimising the state updates in a single renders. 
 - Note: this is done by React 18+ only and not in lower versions. And React batches sync and async tasks both.
-Conside the example:  function Counter() {
-  const [count, setCount] = useState(0);
+    Conside the example: function Counter() {
+    const [count, setCount] = useState(0);
 
-  const handleClick = () => {
-    setCount(count + 1);
-    setCount(count + 1);
-  };
+    const handleClick = () => {
+        setCount(count + 1);
+        setCount(count + 1);
+    };
 
-  console.log("Render:", count);
-  return <button onClick={handleClick}>Count: {count}</button>;
-} Here, set count will be called twice but render of the Counter component will be only once as react internally sees that same change is being done 2 times, so it optimises. 
+    console.log("Render:", count);
+    return <button onClick={handleClick}>Count: {count}</button>;
+}Here, set count will be called twice but render of the Counter component will be only once as react internally sees that same change is being done 2 times, so it optimises. 
 React Version	setCount called	Renders	Final count
 React 17	Twice	Twice	1
 React 18+	Twice	Once (batched)	1
- setCount(c => c + 1);
-await fetch('/api/data');   // asynchronous boundary
-setCount(c => c + 1); 													—> dens not cause batching as async task executes between the state updates. 
+    setCount(c => c + 1);
+    await fetch('/api/data');   // asynchronous boundary
+    setCount(c => c + 1); 													—> dens not cause batching as async task executes between the state updates. 
 
 setTimeout(() => setCount(c => c + 1), 0);
 setTimeout(() => setCount(c => c + 2), 0);								—> Still breaks batching as both have different tasks in queue and hence treated different. If they were is a single promise or setTimeout, then batting would have worked. 
