@@ -14,9 +14,7 @@ Use state management library for app-level domain data.	                        
 
 
 
-
-
-context api is good and helps in sharding the data between multiple components but only in cases where we have samll no of components. or data flow is simple 
+Context api is good and helps in sharding the data between multiple components but only in cases where we have samll no of components. or data flow is simple 
 i.e parent too child to gradparent and not too complex. in small cases, re-rendering can be handled easily by either using React.memo or useMemo or useCallback
 and even after this, if rendering is happening, this is acceptable as not much no of components are being re-rendered. But if my applicaitn has 10's-20s of compoents, 
 and have very complex logic of data sharing, then using context becomes repititive and reduces efficency. Also, it accompanies other problems like data not 
@@ -24,3 +22,63 @@ stored permanently(if we rfresh the page, data is lost i.e. no persistence). whe
 the whole react app, we also get adiitinal features like data persistence, selector based rendering of components, async flow is also handled easily etc. so, 
 for complex data sharing, it is preferred to use state mngmt libraries. but for smaller use cases like: session storage maintenance, theme of site, language 
 selected by user, context can be used, but some complex data like cart updation, user details, dashoards etc can be shared thoru all app via State mngmt libraries.
+
+
+React.memo()   --> prevents re-renders of the functional component when the props passed have not been changed. React.memo is a higher-order component (HOC) that memoizes a functional component.
+                    Con is that react.memo memoises only for props change and not global state/context changes. i.e even if context value remains same but reference to context's value object is changed, 
+                    component is being re-rendered. 
+✅ Use when:
+- Component is pure (renders same UI for same props).
+- It’s re-rendered frequently with unchanged props.
+- It’s performance-sensitive (heavy DOM or complex UI).
+- Child depends only on props (no internal state or context).
+❌ Don’t use when:
+- Component is very lightweight → memo adds overhead.
+- Props change often → memo comparison becomes wasted work.
+- Component relies on context or global state (still re-renders).
+- Child re-renders are cheap or infrequent.
+
+useCallback()  --> Unnecessary re-renders of children just because the parent created a new function reference. useCallback() memoizes a function reference between renders —
+                    so the same function instance is reused until its dependencies change. useCallback(fn,[])
+useMemo()      --> Ii is similar in spirit but used for values/computations instead of functions. useMemo(() => fn, [])
+Cons of using them: both increase code complexity slightly and add memory overhead. 
+✅ Use them only when:
+- The value/function is expensive to compute/create
+- You’re passing props to memoized children
+
+Note: useCallback() and React.memo() work best together. If a function in a component is not memoised with useCallback, then on refreshing the component, it will re-render 
+because reference to that function will change. Hence component memoised with React.memo() will still not be re-rendered. 
+See example below: 
+const handleClick = useCallback(() => { console.log("clicked"); }, []);
+const Child = React.memo(({ onClick }) => {
+  console.log("child rendered");
+  return <button onClick={onClick}>Click</button>;
+});
+---- Without useCallback, the new handleClick reference would break memoization. ----
+
+State mgmt libraries like redux, zustand, redux toolkit etc. 
+
+Redux: 
+- Store      --> that holds all the states and data of the application
+- Action     --> different methods supported to the user to mutate the items in store.
+- Reducer    --> describes how the state will change when action is called. (takes state and actions, and outputs, new state), is a pure function
+
+React Redux:
+- useSelector   --> hook to selectively read data from the store. Component depends on only that part of store for re-rendering. 
+- useDispatch   --> hook which allows to send actions to the store via dispatch method. Dispatch describes how the action is being called
+- Provider      --> wraps the whole react app and makes the Redux store available to every component inside it.
+
+Redux is based on:
+1. Single source of truth               → One store for the whole app.
+2. State is read-only                   → You cannot modify state directly; only via actions. Instead of mutating, we return a new copy of the state using spread operators. 
+3. Changes made with pure fn(reducers)  → Reducers describe how state changes.
+
+Limitations of Redux: 
+- Too much boilerplate
+- hard to handle async tasks
+- Manual setup for actions, reducers, constants.
+- dev tools not helpful in time travel by replaying state snapshots.
+
+
+
+
