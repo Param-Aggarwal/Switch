@@ -18,11 +18,17 @@ Context api is good and helps in sharding the data between multiple components b
 i.e parent too child to gradparent and not too complex. in small cases, re-rendering can be handled easily by either using React.memo or useMemo or useCallback
 and even after this, if rendering is happening, this is acceptable as not much no of components are being re-rendered. But if my applicaitn has 10's-20s of compoents, 
 and have very complex logic of data sharing, then using context becomes repititive and reduces efficency. Also, it accompanies other problems like data not 
-stored permanently(if we rfresh the page, data is lost i.e. no persistence). whereas if we use state management libraries which can efficently pass data between
-the whole react app, we also get adiitinal features like data persistence, selector based rendering of components, async flow is also handled easily etc. so, 
-for complex data sharing, it is preferred to use state mngmt libraries. but for smaller use cases like: session storage maintenance, theme of site, language 
+stored permanently (if we rfresh the page, data is lost i.e. no persistence). whereas if we use state management libraries which can efficently pass data between
+the whole react app, we also get additional features like data persistence, selector based rendering of components, async flow is also handled easily etc. so, 
+for complex data sharing, it is preferred to use state mgmt libraries. but for smaller use cases like: session storage maintenance, theme of site, language 
 selected by user, context can be used, but some complex data like cart updation, user details, dashoards etc can be shared thoru all app via State mngmt libraries.
 
+Cons of Context API
+- Causes re-renders of all the components using the context if context changes. even if only the reference changes and no actual value is changed. 
+- This can be overcome with hooks like useMemo(), React.memo(), useCallback() etc but this can become messy if large app is supported with large no of components. 
+- Also, no data persistency is guranteed in context.  
+- Debugging is difficult in context as we cannot tracj what caused the re-render. becaue context does not log that info. 
+- Handling async flow via Context API is alo difficult. 
 
 React.memo()   --> prevents re-renders of the functional component when the props passed have not been changed. React.memo is a higher-order component (HOC) that memoizes a functional component.
                     Con is that react.memo memoises only for props change and not global state/context changes. i.e even if context value remains same but reference to context's value object is changed, 
@@ -54,9 +60,17 @@ const Child = React.memo(({ onClick }) => {
   console.log("child rendered");
   return <button onClick={onClick}>Click</button>;
 });
----- Without useCallback, the new handleClick reference would break memoization. ----
+Note: Without useCallback, the new handleClick reference would break memoization.
 
-State mgmt libraries like redux, zustand, redux toolkit etc. 
+-------------------------- State mgmt libraries like redux, zustand, redux toolkit etc. ----------------------
+
+Redux is state management library which helps to manage the global state of our React app and can be used by any component of our application. It is synchronous 
+in nature i.e. it can only handle synchronous actions like: { type: "INCREMENT" } etc. For async operaitons, we use middlewares. (discussed later)
+
+Redux is based on:
+1. Single source of truth               → One store for the whole app.
+2. State is read-only                   → You cannot modify state directly; only via actions. Instead of mutating, we return a new copy of the state using spread operators. 
+3. Changes made with pure fn(reducers)  → Reducers describe how state changes
 
 Redux: 
 - Store      --> that holds all the states and data of the application
@@ -68,17 +82,56 @@ React Redux:
 - useDispatch   --> hook which allows to send actions to the store via dispatch method. Dispatch describes how the action is being called
 - Provider      --> wraps the whole react app and makes the Redux store available to every component inside it.
 
-Redux is based on:
-1. Single source of truth               → One store for the whole app.
-2. State is read-only                   → You cannot modify state directly; only via actions. Instead of mutating, we return a new copy of the state using spread operators. 
-3. Changes made with pure fn(reducers)  → Reducers describe how state changes.
-
 Limitations of Redux: 
 - Too much boilerplate
 - hard to handle async tasks
 - Manual setup for actions, reducers, constants.
 - dev tools not helpful in time travel by replaying state snapshots.
 
+Redux Dev Tools: 
+Redux provides excellent debugging support through Redux DevTools, which allows me to inspect every state change in real time. 
+I can see which action was dispatched, its payload, and how it changed the previous state to the next state. This makes debugging 
+far easier than Context API, where I’d have to rely on manual logs. Redux also enforces immutability, so I can even ‘time-travel’ 
+between states — something not possible with Context.”
+💡 So yes — Redux’s centralized state + DevTools integration = much easier debugging, tracking, and rollback.
+
+Middlewares: 
+Why do we need this: 
+- React can only perform sync operations like {type: "Increment"}. because reducers are pure functions i.e. no async operations. So,
+  It cannot handle async calls like: API Calls, delaying actions, logging them, handling complex logic etc. So, for this we have a concept of middleware. 
+
+What is Middleware !? 
+- It is basically a function which sits between dispatching the action and receiving at the reducer. 
+Without middleware, the flow is : ----> Component → dispatch(action) → Reducer → Store updates state
+With middleware, the flow is: ------> Component → dispatch(action) → Middleware(s) → Reducer → Store updates state
+
+What do Middleware do ?
+- Middleware helps perform side effects outside reducers, and then dispatch plain actions when ready.
+- Log, modify, delay, or stop an action before it hits the reducer.
+- Trigger side effects (like API calls).
+- Dispatch additional actions automatically.
+
+Pros of Middleware: 
+- Async Support: 	          Enables async workflows (API calls, timers, etc).
+- Centralized Side Effects:	Keeps reducers pure and focused only on state changes.
+- Enhanced Debugging:     	Middlewares like redux-logger show exact action and state flow.
+- Reusability:              You can plug multiple middlewares (e.g., thunk, saga, logger).
+- Clean Code:              	Reduces repetitive logic inside components (no need for manual loading/error states everywhere).
+
+Redux Thunk: 
+So, Redux Thunk is a middleware that Redux provides for supporting async tasks execution. It basically intercepts every action before it reaches reducers. 
+In One line: Redux Thunk is a middleware that checks if an action is a function, and if so, executes it with dispatch and getState, 
+enabling async and conditional logic inside Redux.
+
+Internal implementation of Redux thunk: 
+const thunkMiddleware = ({ dispatch, getState }) => next => action => {
+  if (typeof action === 'function') {
+    // If action is a function (thunk), call it with dispatch & getState
+    return action(dispatch, getState);
+  }
+  // Otherwise, pass it to the next middleware or reducer
+  return next(action);
+};
 
 
-
+How do we pass data from child to parent !!
