@@ -134,4 +134,23 @@ const thunkMiddleware = ({ dispatch, getState }) => next => action => {
 };
 
 
-How do we pass data from child to parent !!
+Q) How do we pass data from child to parent !!
+Ans) Make state in parent and pass callback func to update state to the child as prop. 
+
+Lifecycle Methods:
+React lifecycle methods are special hooks (in classes or functions) that let you perform side effects during specific points of a 
+component’s existence — like mounting, updating, or unmounting.
+Mounting    --> On first render, componentDidMount(), useEffect(() => {...}, []),	Data fetch, init
+Updating    -->	On prop/state change, componentDidUpdate(), useEffect(() => {...}, [deps]), React to change
+Unmounting	--> Before removal, ComponentWillUnmount(),	useEffect cleanup, Cleanup timers/listeners
+
+Hooks: 
+- Hooks are the functions that lets us use state, lifecycle methods, contexts inside functional components. Earlier, functional components
+  were just stateless UI renderers and we had to use class-based components to control the state. But now, with the help of hooks, functional components
+  can be used to manage states of component, therefore making the components more re-usable and easy to manage. 
+State: 
+- States are variables that persist across re-renders. So, we declare state only when we need the values across re-renders. Otherwise, 
+  normal variable can serve the purpose. 
+- State is immutable
+- State updates are async
+- Using state inside useEffect iwth no dependency can cause unlimited re-renders. 
