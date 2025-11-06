@@ -154,3 +154,21 @@ State:
 - State is immutable
 - State updates are async
 - Using state inside useEffect iwth no dependency can cause unlimited re-renders. 
+useEffect: 
+  - No dependency array       --> after every render  (for debugging/logging)
+  - Empty []                  --> on first mount (for api calls, event listeners)
+  - [dep]                     --> when state mentioned in dep change (for updating components when state changes)
+  - cleanup                   --> before un-mount (for removing event listeneres, timers) 
+- useEffect runs twice in dev mode (mount --> unmount --> mount) for ensuring resilient UI and keeping it cleanup safe. 
+- Note: Don’t mutate state directly inside useEffect (causes infinite loops).
+- Dependecies can have any reactive value that can change i.e states, props, contexts, memoised functions, derived props/states, etc.
+- useMemo and useCallback should be used in accordance with useEffect hook to increase the performance of the website and reduce the unnecessary re-renders.
+- You cannot make the effect callback async directly. Like: useEffect(async () => {...}, []);  Correct approach is written below: 
+    useEffect(() => {
+      const fetchData = async () => {
+        const res = await fetch("/api");
+      };
+      fetchData();
+    }, []);
+- 
+  
