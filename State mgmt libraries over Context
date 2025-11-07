@@ -163,12 +163,25 @@ useEffect:
 - Note: Don’t mutate state directly inside useEffect (causes infinite loops).
 - Dependecies can have any reactive value that can change i.e states, props, contexts, memoised functions, derived props/states, etc.
 - useMemo and useCallback should be used in accordance with useEffect hook to increase the performance of the website and reduce the unnecessary re-renders.
-- You cannot make the effect callback async directly. Like: useEffect(async () => {...}, []);  Correct approach is written below: 
+- Can do sync and sync taks both in it. But cannot make the effect callback async directly. Like: useEffect(async () => {...}, []);  
+  Correct approach is written below: 
     useEffect(() => {
       const fetchData = async () => {
         const res = await fetch("/api");
       };
       fetchData();
     }, []);
-- 
-  
+useLayoutEffect
+- runs synchronously during th render process. It runs before the browser paints but after the Real DOM Updation.
+- As it blocks the paint, it cna be a performance overhead if used extensively. 
+Flow of render --->     Component runs --> React builds the Virtual DOM --> updates the real DOM --> useLayoutEffect runs 
+                              --> Paint the browser with updated DOM --> useEffect runs
+- Use Cases: 
+  - Measure element size before paint
+  - Scroll to a position before user sees it
+  - Trigger synchronous animations (GSAP, Framer Motion)
+  - Prevent flicker in layout shift-sensitive UIs
+Note: During SSR, DOM cannot be manipulated. So, useEfect and useLayoutEffect cannot manipulate DOM on server. Therefore, does nothing. 
+useRef
+- persists data between re-renders without causing re-renders. 
+- Used to store mutable values acroos re-renders without initiating re-render itself. Eg: timers, DOM nodes, cache, prev values
