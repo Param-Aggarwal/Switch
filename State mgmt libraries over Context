@@ -62,6 +62,22 @@ const Child = React.memo(({ onClick }) => {
 });
 Note: Without useCallback, the new handleClick reference would break memoization.
 
+useTransition
+- Hook which lets mark some state updates as non urgent and React can defer them while performing heavy re-renders. 
+- It just tells React's scheduler: “This update is low priority — do it after urgent work is finished.”
+  const [isPending,startTransition] = useTransition();
+useDefferedValue 
+- Similar to useTransition but for derived value rather than states.
+Suspense
+- Component which is used to pause rendering until something (like data or code) is ready.
+- It shows a fallback UI (like a spinner or skeleton) during the wait. 
+Lazy Loading
+- React.lazy() delays the rendering of the component/function unless required. And shows the fallback UI until then via Suspense Hook. 
+- Wrap the whole component inside React.lazy() function. 
+Code Splitting 
+- Beaking your app’s JavaScript bundle into smaller chunks so the browser loads only what’s needed — instead of one big file.
+- It’s a performance optimization technique that improves initial load speed.
+
 -------------------------- State mgmt libraries like redux, zustand, redux toolkit etc. ----------------------
 
 Redux is state management library which helps to manage the global state of our React app and can be used by any component of our application. It is synchronous 
@@ -181,7 +197,20 @@ Flow of render --->     Component runs --> React builds the Virtual DOM --> upda
   - Scroll to a position before user sees it
   - Trigger synchronous animations (GSAP, Framer Motion)
   - Prevent flicker in layout shift-sensitive UIs
-Note: During SSR, DOM cannot be manipulated. So, useEfect and useLayoutEffect cannot manipulate DOM on server. Therefore, does nothing. 
+Note: During SSR, DOM cannot be manipulated as there is no DOM on server. So, useEfect and useLayoutEffect do not run in SSR. Therefore, does nothing. 
 useRef
 - persists data between re-renders without causing re-renders. 
-- Used to store mutable values acroos re-renders without initiating re-render itself. Eg: timers, DOM nodes, cache, prev values
+- Used to store mutable values acroos re-renders without initiating re-render itself. Eg: timers, DOM nodes, cache, prev values.
+forwardRef (Not a hook)
+- React does not allow the ref to be passed tochild as prop. These are handled specially in react. this can be done using forward Ref function. 
+  Eg: 
+    Ref declared in parent but passed to the child
+    const Child = React.forwardRef((props, ref) => {
+      return <input ref={ref} placeholder="Enter name" />;
+    });
+useReducer
+- advanced version of useState hook to handle multiple state changes via a single state. For eg: form fields. 
+- const [state,dispatch] = useReducer(reducer fn(), initialState)
+- Very similar to redux --> using redicer function to mutate the state indirectly via dispatching actions. Just that useReducer is accessible 
+                              within the component. Not sharable across the whole React application.
+ 
