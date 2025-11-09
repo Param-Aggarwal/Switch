@@ -84,7 +84,7 @@ Hooks —>
 - Lets us add state and other features to our functional components without using class based components. 
 - GPT Link for Hooks: https://chatgpt.com/c/683c5e61-ccdc-8001-b424-70e94cc4955b (In Depth analysis)
 - Link for below video: https://www.youtube.com/watch?v=LOH1l-MP_9k (Summarising all the hooks with their functionalities)
-- 
+- ￼
 
 State Hooks —> hooks like useState rely on closures + React’s internal hook array to preserve and reconnect state values between renders — that’s the essence of “stateful functional components”.
 - useState —> to manage simple state management
@@ -122,7 +122,7 @@ Used for dealing with external systems or doing things cannot be done by any oth
 - useInsertionEffect —> 
     * Runs before the above two. Even before rendering the ui. I
     * s synchronous. To add styles to a particular js elements. 
-    - 
+    - ￼
 
 Context Hooks —> 
 - useContext —> Instead of prop Drilling, we use this hook to provide global context to our parent component and then can use it anywhere inside the child component even if it is 3-4-5 levels deep. 
@@ -132,7 +132,7 @@ Context Hooks —>
         * Pass value of context inside ContextProvider component as props. 
         * Use that value in child component with useContext Hook and the above made context variable as input. 
     * Directory Structure can be —> 
-        * 
+        * ￼
     * All components using useContext re-render when context value changes
     * Ca be used in combination with useState or useReducer hook. 
     * Use Case —> helps in enabling features like: (Basically global setting that do not change much)
@@ -266,23 +266,23 @@ Batching:
 - When React sees multiple changes to the state, then it batches those updates and optimises inherently to reduce the renders of the component and hence increase the performance. 
 - Batching is process of optimising the state updates in a single renders. 
 - Note: this is done by React 18+ only and not in lower versions. And React batches sync and async tasks both.
-    Conside the example: function Counter() {
-    const [count, setCount] = useState(0);
+Conside the example: function Counter() {
+  const [count, setCount] = useState(0);
 
-    const handleClick = () => {
-        setCount(count + 1);
-        setCount(count + 1);
-    };
+  const handleClick = () => {
+    setCount(count + 1);
+    setCount(count + 1);
+  };
 
-    console.log("Render:", count);
-    return <button onClick={handleClick}>Count: {count}</button>;
+  console.log("Render:", count);
+  return <button onClick={handleClick}>Count: {count}</button>;
 }Here, set count will be called twice but render of the Counter component will be only once as react internally sees that same change is being done 2 times, so it optimises. 
 React Version	setCount called	Renders	Final count
 React 17	Twice	Twice	1
 React 18+	Twice	Once (batched)	1
-    setCount(c => c + 1);
-    await fetch('/api/data');   // asynchronous boundary
-    setCount(c => c + 1); 													—> dens not cause batching as async task executes between the state updates. 
+setCount(c => c + 1);
+await fetch('/api/data');   // asynchronous boundary
+setCount(c => c + 1); 													—> dens not cause batching as async task executes between the state updates. 
 
 setTimeout(() => setCount(c => c + 1), 0);
 setTimeout(() => setCount(c => c + 2), 0);								—> Still breaks batching as both have different tasks in queue and hence treated different. If they were is a single promise or setTimeout, then batting would have worked. 
@@ -310,8 +310,12 @@ Here, Child is a reusable component which applies the same css and formatting to
 - This can be removed or reduced by using useMemo hook which shallow copies the value of props and if found same, then does not re-render the child component. Foor more info, Read Hooks —> useMemo
 
 Context: 
-- Pdf
-- Fvf
+- gnfg
+- Fvjnsdfvf
+- Fjnwem
+- Jngmw
+- 
+In setState, prev is React’s built-in way to always give you the latest state, so you can safely build the next state without worrying about stale variables. Using the functional updater is considered best practice whenever the new state depends on the old state.
 
 Preventing of re-renders in contexts, props, states etc. by React.memo(), useMemo(), useCallback() given below: 
 Concept	Purpose	When to Use
@@ -320,6 +324,7 @@ useMemo	Cache heavy calculations	Derived/expensive values
 useCallback	Cache function references	Passing stable callbacks
 Context API	Share small global data	Small/medium apps
 Redux/Zustand	Manage app-wide state efficiently	Medium–large apps
+
 
 React Query —> alias TanStack Query 
 - A React library which handles fetching more efficiently
