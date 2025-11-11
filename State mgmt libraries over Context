@@ -1,7 +1,7 @@
-React topic
+-------------------state management and Data Sharing in React ---------------
 
 
-✅ Your Understanding	          💡 Clarification / Confirmation
+✅ Your Understanding	                                                                                💡 Clarification / Confirmation
 Context API is great for small to medium data-sharing cases	                                          ✅ Correct — things like theme, language, auth state, or feature flags
 For complex or deeply nested state (e.g., cart, analytics, dashboard data)→ Context becomes messy	    ✅ True — leads to prop-drilling or over-re-renders
   Re-renders in small trees can be optimized via React.memo / useMemo / useCallback	                  ✅ Yes — acceptable in low-scale apps
@@ -11,9 +11,7 @@ Libraries like Redux / Zustand solve this + add async handling, logging, and dev
 Practical rule: Use Context for small, global UI-level data. 
 Use state management library for app-level domain data.	                                              ✅ Spot-on best practice
 
-
-
-
+Context API: 
 Context api is good and helps in sharding the data between multiple components but only in cases where we have samll no of components. or data flow is simple 
 i.e parent too child to gradparent and not too complex. in small cases, re-rendering can be handled easily by either using React.memo or useMemo or useCallback
 and even after this, if rendering is happening, this is acceptable as not much no of components are being re-rendered. But if my applicaitn has 10's-20s of compoents, 
@@ -30,23 +28,24 @@ Cons of Context API
 - Debugging is difficult in context as we cannot tracj what caused the re-render. becaue context does not log that info. 
 - Handling async flow via Context API is alo difficult. 
 
-React.memo()   --> prevents re-renders of the functional component when the props passed have not been changed. React.memo is a higher-order component (HOC) that memoizes a functional component.
-                    Con is that react.memo memoises only for props change and not global state/context changes. i.e even if context value remains same but reference to context's value object is changed, 
-                    component is being re-rendered. 
-✅ Use when:
-- Component is pure (renders same UI for same props).
-- It’s re-rendered frequently with unchanged props.
-- It’s performance-sensitive (heavy DOM or complex UI).
-- Child depends only on props (no internal state or context).
-❌ Don’t use when:
-- Component is very lightweight → memo adds overhead.
-- Props change often → memo comparison becomes wasted work.
-- Component relies on context or global state (still re-renders).
-- Child re-renders are cheap or infrequent.
+------- Optimisation Techniques   
+- React.memo()   --> prevents re-renders of the functional component when the props passed have not been changed. React.memo is a higher-order component (HOC) that memoizes a functional component.
+                      Con is that react.memo memoises only for props change and not global state/context changes. i.e even if context value remains same but reference to context's value object is changed, 
+                      component is being re-rendered. 
+  ✅ Use when:
+  - Component is pure (renders same UI for same props).
+  - It’s re-rendered frequently with unchanged props.
+  - It’s performance-sensitive (heavy DOM or complex UI).
+  - Child depends only on props (no internal state or context).
+  ❌ Don’t use when:
+  - Component is very lightweight → memo adds overhead.
+  - Props change often → memo comparison becomes wasted work.
+  - Component relies on context or global state (still re-renders).
+  - Child re-renders are cheap or infrequent.
 
-useCallback()  --> Unnecessary re-renders of children just because the parent created a new function reference. useCallback() memoizes a function reference between renders —
+- useCallback()  --> Unnecessary re-renders of children just because the parent created a new function reference. useCallback() memoizes a function reference between renders —
                     so the same function instance is reused until its dependencies change. useCallback(fn,[])
-useMemo()      --> Ii is similar in spirit but used for values/computations instead of functions. useMemo(() => fn, [])
+- useMemo()      --> Ii is similar in spirit but used for values/computations instead of functions. useMemo(() => fn, [])
 Cons of using them: both increase code complexity slightly and add memory overhead. 
 ✅ Use them only when:
 - The value/function is expensive to compute/create
@@ -78,67 +77,71 @@ Code Splitting
 - Beaking your app’s JavaScript bundle into smaller chunks so the browser loads only what’s needed — instead of one big file.
 - It’s a performance optimization technique that improves initial load speed.
 
--------------------------- State mgmt libraries like redux, zustand, redux toolkit etc. ----------------------
+------- SEO Optimisation ------
+- Helmet: React Library which helps in increasing SEO performance of the website by manipulating the <head> section of the html document. 
+          Can be used in SSR as well as CSR both. 
+  Eg: import { Helmet } from "react-helmet";
+      function ProductPage({ product }) {
+        return (
+          <>
+            <Helmet>
+              <title>{product.name} | My Store</title>
+              <meta name="description" content={product.description} />
+            </Helmet>
+            <h1>{product.name}</h1>
+          </>
+        );
+      }
 
+-------------------------- State mgmt libraries like redux, zustand, redux toolkit etc. ----------------------
 Redux is state management library which helps to manage the global state of our React app and can be used by any component of our application. It is synchronous 
 in nature i.e. it can only handle synchronous actions like: { type: "INCREMENT" } etc. For async operaitons, we use middlewares. (discussed later)
-
 Redux is based on:
 1. Single source of truth               → One store for the whole app.
 2. State is read-only                   → You cannot modify state directly; only via actions. Instead of mutating, we return a new copy of the state using spread operators. 
 3. Changes made with pure fn(reducers)  → Reducers describe how state changes
-
 Redux: 
 - Store      --> that holds all the states and data of the application
 - Action     --> different methods supported to the user to mutate the items in store.
 - Reducer    --> describes how the state will change when action is called. (takes state and actions, and outputs, new state), is a pure function
-
 React Redux:
 - useSelector   --> hook to selectively read data from the store. Component depends on only that part of store for re-rendering. 
 - useDispatch   --> hook which allows to send actions to the store via dispatch method. Dispatch describes how the action is being called
 - Provider      --> wraps the whole react app and makes the Redux store available to every component inside it.
-
 Limitations of Redux: 
 - Too much boilerplate
 - hard to handle async tasks
 - Manual setup for actions, reducers, constants.
 - dev tools not helpful in time travel by replaying state snapshots.
-
 Redux Dev Tools: 
 Redux provides excellent debugging support through Redux DevTools, which allows me to inspect every state change in real time. 
 I can see which action was dispatched, its payload, and how it changed the previous state to the next state. This makes debugging 
 far easier than Context API, where I’d have to rely on manual logs. Redux also enforces immutability, so I can even ‘time-travel’ 
 between states — something not possible with Context.”
 💡 So yes — Redux’s centralized state + DevTools integration = much easier debugging, tracking, and rollback.
-
 Middlewares: 
 Why do we need this: 
 - React can only perform sync operations like {type: "Increment"}. because reducers are pure functions i.e. no async operations. So,
   It cannot handle async calls like: API Calls, delaying actions, logging them, handling complex logic etc. So, for this we have a concept of middleware. 
-
 What is Middleware !? 
 - It is basically a function which sits between dispatching the action and receiving at the reducer. 
 Without middleware, the flow is : ----> Component → dispatch(action) → Reducer → Store updates state
 With middleware, the flow is: ------> Component → dispatch(action) → Middleware(s) → Reducer → Store updates state
-
 What do Middleware do ?
 - Middleware helps perform side effects outside reducers, and then dispatch plain actions when ready.
 - Log, modify, delay, or stop an action before it hits the reducer.
 - Trigger side effects (like API calls).
 - Dispatch additional actions automatically.
-
-Pros of Middleware: 
+Pros of Middleware:
 - Async Support: 	          Enables async workflows (API calls, timers, etc).
 - Centralized Side Effects:	Keeps reducers pure and focused only on state changes.
 - Enhanced Debugging:     	Middlewares like redux-logger show exact action and state flow.
 - Reusability:              You can plug multiple middlewares (e.g., thunk, saga, logger).
 - Clean Code:              	Reduces repetitive logic inside components (no need for manual loading/error states everywhere).
-
 Redux Thunk: 
 So, Redux Thunk is a middleware that Redux provides for supporting async tasks execution. It basically intercepts every action before it reaches reducers. 
 In One line: Redux Thunk is a middleware that checks if an action is a function, and if so, executes it with dispatch and getState, 
 enabling async and conditional logic inside Redux.
-
 Internal implementation of Redux thunk: 
 const thunkMiddleware = ({ dispatch, getState }) => next => action => {
   if (typeof action === 'function') {
@@ -149,18 +152,17 @@ const thunkMiddleware = ({ dispatch, getState }) => next => action => {
   return next(action);
 };
 
-
-Q) How do we pass data from child to parent !!
+---------- Q) How do we pass data from child to parent !!
 Ans) Make state in parent and pass callback func to update state to the child as prop. 
 
-Lifecycle Methods:
+----------------- Lifecycle Methods -------------------
 React lifecycle methods are special hooks (in classes or functions) that let you perform side effects during specific points of a 
 component’s existence — like mounting, updating, or unmounting.
 Mounting    --> On first render, componentDidMount(), useEffect(() => {...}, []),	Data fetch, init
 Updating    -->	On prop/state change, componentDidUpdate(), useEffect(() => {...}, [deps]), React to change
 Unmounting	--> Before removal, ComponentWillUnmount(),	useEffect cleanup, Cleanup timers/listeners
 
-Hooks: 
+----------------- Hooks: --------------------
 - Hooks are the functions that lets us use state, lifecycle methods, contexts inside functional components. Earlier, functional components
   were just stateless UI renderers and we had to use class-based components to control the state. But now, with the help of hooks, functional components
   can be used to manage states of component, therefore making the components more re-usable and easy to manage. 
@@ -213,4 +215,70 @@ useReducer
 - const [state,dispatch] = useReducer(reducer fn(), initialState)
 - Very similar to redux --> using redicer function to mutate the state indirectly via dispatching actions. Just that useReducer is accessible 
                               within the component. Not sharable across the whole React application.
- 
+useDebugValue
+- What: Add debug labels/info for custom hooks in React DevTools.
+- Why: To understand hook state at a glance without console spam.
+- How: useDebugValue(value) or useDebugValue(value, formatFn).
+- Use cases: Auth hooks, network status hooks, data-fetching hooks in shared libraries.
+- Gotchas: Dev-only. Not for rendering. Mostly for reusable hooks.
+useImperativeHandle
+- What: Expose custom methods from a child to parent through refs.
+- Why: Parent sometimes needs to imperatively control child (focus, scroll, open/close).
+- How: forwardRef + useImperativeHandle(ref, () => ({ ...publicAPI })).
+- Use cases: Forms, modals, focus, scroll, video controls.
+- Gotchas: Can make code less declarative if abused → use only when DOM-like control is needed.
+
+-------------- Error boundary ------------
+- Component which handles error at the component level. whenever component rendering fails (due to invalid prop, render failure etc), 
+  React looks if the parent component is error boundary or not and then goes up till it finds and if not, shows error otherwise Fallback UI. 
+- Library react-error-boundary is used. 
+- Component({error, resetErrorBoundary}) 
+- Props: 
+    - FallbackComponent={}, 
+    - onError=()=>{}, 
+    - onReset=()=>{}, 
+    - resetKeys=[](used for auto resetting)
+
+
+React Router and protected routes, broewser routes, 
+How to pass data between different compoenents using ReactRouter (props.history.push, props.match.params)
+
+
+
+
+-------------- Next.js -------------
+SSR: 
+- HTML is generated on the server at each request — meaning every time a user hits the page, Next.js runs your code, fetches data, and sends a fresh HTML.
+- getServersideProps is used. 
+  Pros:  
+      - Fresh HTML page is rendered every time. 
+      - SEO friendly website
+  Cons: 
+      - Takes time to render the page
+      - Requires server side processing - expensive at scale. 
+      - Need caching for optimization. 
+  Use Case: 
+      - News, Product details
+      - Admin dashboards with live data
+      - Order tracking 
+      - Sports score --> basically data that changes very frequently
+SSG: 
+- HTML is generated once at build time, not on every request.
+- Next.js pre-renders all pages into static HTML files which are served instantly from CDN.
+- getStaticProps is used. 
+  Pros: 
+    - Fastest load time (pre-rendered HTML served via CDN)
+    - No Server Load at runtime. 
+    - SEO friendly (fully rendered content).
+  Cons:
+    - Can only be used for static sites. Not for dynamic data.  
+    - Outdated content unless rebuilt. 
+    - larger build time for large applications. 
+  Use Cases: 
+    - Blogs, documentation sites.
+    - Product pages with rarely changing info.
+    - Marketing pages, portfolios, landing pages.
+ISR: 
+- A hybrid between SSR and SSG.
+- Next.js builds static pages, but you can regenerate them periodically in the background using a revalidate timer.
+- getStatisProps with revalidate flag is used. 
