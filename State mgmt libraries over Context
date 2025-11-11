@@ -244,6 +244,36 @@ React Router and protected routes, broewser routes,
 How to pass data between different compoenents using ReactRouter (props.history.push, props.match.params)
 
 
+---------------- Strict Mode ------------
+- React.StrictMode is a development-only wrapper that activates additional checks and warnings for its descendants. 
+- It helps detect side effects, deprecated APIs, and unsafe patterns, ensuring your components are pure and future-proof for concurrent rendering.
+- It doesn’t affect production builds.
+Note: By default, all components and hooks in React should be pure i.e. no side effects and always give the same output. 
+
+----------- Flux ------------
+- Flux is an architectural pattern introduced by Facebook for managing data flow in React applications.
+- It enforces unidirectional data flow through actions, dispatcher, stores, and views — making state predictable and debugging easier. 
+- Redux is a simplified implementation of the Flux pattern.
+
+
+----------- Higher Order component --------------
+
+
+Custom Hooks vs HOC 
+Custom Hooks → 
+- reuse logic only (stateful behavior, effects, data fetching).
+- Each component decides its own UI using that logic.
+- Great when the UI differs, but logic is shared.
+- Example: useAuth(), useFetch(), useDebounce()
+
+HOCs → 
+- reuse logic + structural pattern/UI behavior together.
+- You wrap existing components to extend or modify their render behavior.
+- Great when multiple components follow the same render structure or need to be conditionally wrapped (auth, theming, logging, etc.).
+
+Summary: 
+✅ Use Custom Hooks → when logic is shared but UI differs.
+✅ Use HOCs → when both logic and component structure/layout are reused or wrapped.
 
 
 -------------- Next.js -------------
