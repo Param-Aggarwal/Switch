@@ -241,6 +241,30 @@ useImperativeHandle
 
 
 React Router and protected routes, broewser routes, 
+- loaders/actions/RouterProvider
+- Browser Router/Hash Router
+- useNavigate() — programmatic navigation (push/replace).
+- useParams() — dynamic segment values. Gvies merged values for nested routes at the deepest level. 
+  - <Route path="/users/:userId" element={<User/>}/>          --> (use params will have param as userId only)
+      <Route path="/posts/:postId" element={<Post/>}/>        --> (useParams wil have both userId adn postId available)
+  - Always include any route params used inside an effect’s logic in its dependency array. (Becasue React Router re-uses the same compoent if path matches. so unmounting of component will not happen if we go from /users/1 to /users/2 and hence component wil not re-render again. ANd same component will be used with changed value. )
+  - In React Router, route params can change without unmounting the component. If you use useEffect() with useParams(), include the param (e.g. id) in the dependency array to ensure the effect re-runs when the route changes.
+- useLocation() — current location object (pathname, search, state).
+- Link / NavLink — anchor-like navigation without reload; NavLink gives active styling.
+- Outlet — placeholder for child routes in nested layouts.
+- useSearchParams() — read/write query params (URLSearchParams wrapper).
+- Navigate — redirect component.
+- createBrowserRouter, RouterProvider, loader, action (v6.4+) — data router built-in.
+
+
+
+Routing
+Use <Routes> + <Route> → for simple client-only SPAs.
+Use useRoutes() → when routes depend on state or props dynamically.
+Use createBrowserRouter() → when you want data fetching + routing integrated (v6.4+ standard).
+
+
+
 How to pass data between different compoenents using ReactRouter (props.history.push, props.match.params)
 
 
