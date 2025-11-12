@@ -9,7 +9,7 @@ const RouteComponent = () => {
     return ( 
         <> 
             <Routes>
-                <Route path="/home" element={<h5>This is Header</h5>} />    
+                <Route path="/" element={<h5>This is Header</h5>} />    
             </Routes>
             <Routes>
                 <Route path="/home" element={<App />}>

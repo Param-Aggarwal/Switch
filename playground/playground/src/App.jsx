@@ -42,7 +42,7 @@ function App() {
         style={{ padding: "8px 10px", width: "500px" }}
         onChange={(e) => setInput(e.target.value)}
       />
-      <Outlet context={"this is context passed from parent App to its child"} />
+      {/* <Outlet context={"this is context passed from parent App to its child"} /> */}
 
     </>
   )
