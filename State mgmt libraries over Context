@@ -46,36 +46,45 @@ Cons of Context API
 - useCallback()  --> Unnecessary re-renders of children just because the parent created a new function reference. useCallback() memoizes a function reference between renders —
                     so the same function instance is reused until its dependencies change. useCallback(fn,[])
 - useMemo()      --> Ii is similar in spirit but used for values/computations instead of functions. useMemo(() => fn, [])
-Cons of using them: both increase code complexity slightly and add memory overhead. 
-✅ Use them only when:
-- The value/function is expensive to compute/create
-- You’re passing props to memoized children
+  ❌ Cons of using them: 
+  - both increase code complexity slightly and add memory overhead. 
+  ✅ Use them only when:
+  - The value/function is expensive to compute/create
+  - You’re passing props to memoized children
 
 Note: useCallback() and React.memo() work best together. If a function in a component is not memoised with useCallback, then on refreshing the component, it will re-render 
 because reference to that function will change. Hence component memoised with React.memo() will still not be re-rendered. 
-See example below: 
-const handleClick = useCallback(() => { console.log("clicked"); }, []);
-const Child = React.memo(({ onClick }) => {
-  console.log("child rendered");
-  return <button onClick={onClick}>Click</button>;
-});
+Eg: 
+  const handleClick = useCallback(() => { console.log("clicked"); }, []);
+  const Child = React.memo(({ onClick }) => {
+    console.log("child rendered");
+    return <button onClick={onClick}>Click</button>;
+  });
 Note: Without useCallback, the new handleClick reference would break memoization.
 
-useTransition
-- Hook which lets mark some state updates as non urgent and React can defer them while performing heavy re-renders. 
-- It just tells React's scheduler: “This update is low priority — do it after urgent work is finished.”
-  const [isPending,startTransition] = useTransition();
-useDefferedValue 
-- Similar to useTransition but for derived value rather than states.
-Suspense
-- Component which is used to pause rendering until something (like data or code) is ready.
-- It shows a fallback UI (like a spinner or skeleton) during the wait. 
-Lazy Loading
-- React.lazy() delays the rendering of the component/function unless required. And shows the fallback UI until then via Suspense Hook. 
-- Wrap the whole component inside React.lazy() function. 
-Code Splitting 
-- Beaking your app’s JavaScript bundle into smaller chunks so the browser loads only what’s needed — instead of one big file.
-- It’s a performance optimization technique that improves initial load speed.
+- useTransition
+  - Hook which lets mark some state updates as non urgent and React can defer them while performing heavy re-renders. 
+  - It just tells React's scheduler: “This update is low priority — do it after urgent work is finished.”
+    const [isPending,startTransition] = useTransition();
+- useDefferedValue 
+  - Similar to useTransition but for derived value rather than states.
+- Lazy Loading
+  - React.lazy() delays the rendering of the component/function unless required. And shows the fallback UI until then via Suspense Hook. 
+  - Wrap the whole component inside React.lazy() function. 
+- Suspense
+  - Component which is used to pause rendering until something (like data or code) is ready.
+  - It shows a fallback UI (like a spinner or skeleton) during the wait. 
+- Code Splitting 
+  - Beaking your app’s JavaScript bundle into smaller chunks so the browser loads only what’s needed — instead of one big file.
+  - It’s a performance optimization technique that improves initial load speed.
+- react-window or react-virtualised library 
+  - Used to show only limited results out of long list. Can specify height of the element and list values accomodate the space available and
+    does not render hige list at once. 
+  - 
+- Computed state instead of Derived State
+  - Derived State:     State which is derived usng the props or states. new state is dependent on the previous state. 
+  - Computed State:    We use the value from the props or previous states but do not store that value as separate state, reducing the overhead. 
+                       New state is computed at the render., not stored explicitly. 
 
 ------- SEO Optimisation ------
 - Helmet: React Library which helps in increasing SEO performance of the website by manipulating the <head> section of the html document. 
@@ -241,6 +250,25 @@ useImperativeHandle
 
 
 React Router and protected routes, broewser routes, 
+
+useSearchParams:
+- It lets us read and write query parameters (?key=value) from the URL.
+- It’s a way to share or persist data between components — but via the browser URL, not React state.
+- So it doesn’t just store data locally — it updates the visible URL, making it:
+  - Shareable (copy-paste the link → same filters/pagination)
+  - Bookmarkable
+  - Persistent on reload
+
+⚙️ When to use it
+Use useSearchParams when you want UI state reflected in the URL, e.g.:
+- Search query (?q=iphone)
+- Filters (?category=men&price=low)
+- Pagination (?page=3)
+- Tabs, sorting, dashboard filters
+
+
+
+
 How to pass data between different compoenents using ReactRouter (props.history.push, props.match.params)
 
 
@@ -256,10 +284,7 @@ Note: By default, all components and hooks in React should be pure i.e. no side 
 - Redux is a simplified implementation of the Flux pattern.
 
 
------------ Higher Order component --------------
-
-
-Custom Hooks vs HOC 
+----------- Higher Order component (Custom Hooks vs HOC)  --------------
 Custom Hooks → 
 - reuse logic only (stateful behavior, effects, data fetching).
 - Each component decides its own UI using that logic.
@@ -267,8 +292,11 @@ Custom Hooks →
 - Example: useAuth(), useFetch(), useDebounce()
 
 HOCs → 
-- reuse logic + structural pattern/UI behavior together.
-- You wrap existing components to extend or modify their render behavior.
+- A Higher-Order Component (HOC) is a function that takes a component as input and returns a new enhanced component.
+- It’s mainly used to add extra props, inject behavior, or reuse component logic and structure across multiple components. 
+  (reuse logic + structural pattern/UI behavior together.)
+- We wrap existing components to extend or modify their render behavior.
+- We need to inject additional props or logic (like authentication, theming, logging).
 - Great when multiple components follow the same render structure or need to be conditionally wrapped (auth, theming, logging, etc.).
 
 Summary: 
@@ -312,3 +340,5 @@ ISR:
 - A hybrid between SSR and SSG.
 - Next.js builds static pages, but you can regenerate them periodically in the background using a revalidate timer.
 - getStatisProps with revalidate flag is used. 
+Hot Module Reloading: 
+
