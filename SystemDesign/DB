@@ -1,0 +1,21 @@
+------- For SQL data, we have below options grouped accordong to use cases: -------
+Open-source SQL →       PostgreSQL, MariaDB, MySQL, SQLite
+Enterprise SQL →        Oracle DB, IBM Db2, MS SQL Server, SAP HANA, Teradata
+Cloud SQL →             Amazon Aurora, Google Cloud SQL, Azure SQL, Snowflake
+Distributed SQL →       CockroachDB, Google Spanner, YugabyteDB
+In-memory SQL →         SAP HANA, SingleStore (MemSQL)
+
+----------- For NO-SQL DBs, ---------------
+Document →       MongoDB, Firestore, CouchDB
+Key–Value →      Redis, DynamoDB
+Wide-Column →    Cassandra, HBase, Bigtable
+Graph →          Neo4j, Neptune
+Search →         Elasticsearch, OpenSearch
+Time-Series →    InfluxDB, Prometheus
+
+
+
+
+
+
+
