@@ -20,6 +20,7 @@ You can write your own JS Engine. Only rule is that it should follow ECMA Script
 
 For JS to run, JRE is required which consists of following:
 JS Runtime Environment(JRE) —> JS Engine(call stack+Memory heap) + Event Loop + Micro-task Queue +  CallBack Queue + API’s
+
 Execution Context contains 
 	- Memory(var environment) + code(thread of execution)
 	- Thread of Execution —> where code is run 
@@ -304,8 +305,40 @@ Copy
 Edit
 
 
+----------- Execution flow PRIORITY in Javascript: 
+Synchronous Code → Microtasks → Render Tasks → Macrotasks → Other Async APIs → Web Workers
 
-TOPICS TO REMEMBER: 
+Microtasks 		-->  	Promise.then, catch, finally, queueMicrotask, nextTick 
+Macrotasks 		-->  	setTimeout, setInterval, setImmediate, events 
+Render tasks 	--> 	requestAnimationFrame 
+Asynchronous APIs -->  	fetch, XHR, WebSocket 
+Parallel threads --> 	Web Workers, Worker threads
+
+Explanation: 
+1. Because microtasks must run before the browser re-renders or executes any other async task.
+	RULE:
+	Microtasks always empty completely before continuing (Starvation possible)
+2. Runs after microtasks but before macrotasks because the browser wants to render at ~60fps.
+3. After each macrotask → run microtasks → maybe render → next macrotask.
+4. Priority depends on how they resolve, but generally, Async APIs complete → schedule either microtasks or macrotasks.
+5. So workers do not block the event loop. These run independently from JS main thread.
+
+🎯 FINAL PRIORITY ORDER (from highest to lowest)
+1️⃣ Synchronous code
+2️⃣ Node.js: process.nextTick()
+3️⃣ Microtasks --> queueMicrotask, then:  Promises,
+4️⃣ Render tasks --> requestAnimationFrame
+5️⃣ Macrotasks --> setImmediate, then: setTimeout, events, 
+6️⃣ Async API callbacks --> 
+		fetch → microtask
+		XHR → macrotask
+		WebSocket → macrotask
+7️⃣ Worker thread messages
+8️⃣ Web worker execution itself (parallel, not prioritized on main thread)
+
+
+
+----------- TOPICS TO REMEMBER: 
 Hoisting
 Coercion rules (+ vs -)
 Function declarations vs expressions
