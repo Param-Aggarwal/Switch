@@ -351,6 +351,22 @@ typeof null bug
 Double negation (!!)
 Object key coercion ([object Object])
 
+------- Coercion rules (+ vs -) ------
++ 			--> does strig oncatenation 
+- 			--> does number conversion
+/ or * 		--> does number conversion 
+! 			--> negates by converting to boolean equivalent
+!! 			--> boolean conversion
+?? 			--> returns right value if left is null or undefined. 		Used like: let a = null ?? 5;      // 5
+Boolean()	--> converts to boolean and then conmpare					like Boolean("") --> false but Boolean(" ") --> true
+
+null only equates to null or undefined
+undefined only equates to null or undefined. 
+NaN never equates to anything. 
+null  == undefined 
+
+
+
 ---------- UI animation techniques ------------
 requestAnimationFrame(fn) --> requestAnimationFrame schedules fn() to run just before the next screen repaint (~60 times per second)
 								where is this used? 
