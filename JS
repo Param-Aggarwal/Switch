@@ -295,14 +295,9 @@ Debouncing -->	Delay execution until after pause in events. Example: search box 
 				word. so, Debouncing refers to reducing the calls by making the first call invalid whenever we receive another call.
 Throttle --> 	Executes at fixed intervals, ignoring intermediate calls
 
-
-Call 
-apply 
-bind
-
-js
-Copy
-Edit
+Call 	--> used to attach a fucntion to a object with single argument and call it instantly 
+apply 	--> used to attach a function to a object with array of arguments and call it instantly
+bind	--> used to attach a function to object with single argument and store it somewhere. Cannot call it instantly. 
 
 
 ----------- Execution flow PRIORITY in Javascript: 
@@ -369,11 +364,11 @@ null  == undefined
 
 ---------- UI animation techniques ------------
 requestAnimationFrame(fn) --> requestAnimationFrame schedules fn() to run just before the next screen repaint (~60 times per second)
-								where is this used? 
-									Unlike setTimeout or setInterval, requestAnimationFrame:
-									Is synced with the browser's rendering engine
-									Pauses when the tab is inactive (saves power)
-									Ensures smooth animations
+	Where is this used? 
+		Unlike setTimeout or setInterval, requestAnimationFrame:
+		Is synced with the browser's rendering engine
+		Pauses when the tab is inactive (saves power)
+		Ensures smooth animations
 	
 
 
