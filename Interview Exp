@@ -79,4 +79,14 @@ c()
     * ✅ Displays them in a tabular format
     * ✅ Includes a search bar to filter users by name or city
 
-D. 
+D. Hanny Interveiw Exp
+    Lifecycle methods
+    performance optimisation using memo, callback, lazy loading etc
+    Flatten a deep nested object, create object from flatted array
+    retry with delay for n times until success
+    Polyfills for setTimeut, setInterval, throttle, throttle via flush, Promise etc. 
+    Infinite scrolling and perform actioin when 90% width is crossed !! 
+    Date/time feature
+    Create Collapsible File/folder Structure 
+
+
