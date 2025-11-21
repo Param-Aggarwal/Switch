@@ -88,6 +88,7 @@ D. Hanny Interveiw Exp
     retry with delay for n times until success
     Polyfills for setTimeut, setInterval, throttle, throttle via flush, Promise etc. 
     Infinite scrolling and perform actioin when 90% width is crossed !! 
+    Scroll to a position before user sees it
     Date/time feature
     Create Collapsible File/folder Structure 
 
